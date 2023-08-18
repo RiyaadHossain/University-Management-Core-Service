@@ -11,24 +11,29 @@ datasource db {
 }
 
 model AcademicFaculty {
-  id                String             @id @default(uuid())
-  title             String
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @default(now())
-  students          Student[]
-  academicSemesters AcademicSemester[]
-  faculties         Faculty[]
+  id                  String               @id @default(uuid())
+  title               String
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  
+  students            Student[]
+  academicDepartments AcademicDepartment[]
+  faculties           Faculty[]
 
   @@map("academic_faculties")
 }
 
 model AcademicDepartment {
-  id        String    @id @default(uuid())
+  id        String   @id @default(uuid())
   title     String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   students  Student[]
   faculties Faculty[]
+
+  academicFaculty   AcademicFaculty @relation(fields: [academicFacultyId], references: [id])
+  academicFacultyId String
 
   @@map("academic_departments")
 }
@@ -41,11 +46,8 @@ model AcademicSemester {
   startMonth String
   endMonth   String
   createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   students   Student[]
-
-  academicFaculty   AcademicFaculty @relation(fields: [academicFacultyId], references: [id])
-  academicFacultyId String
 
   @@map("academic_semesters")
 }
@@ -61,9 +63,8 @@ model Student {
   contactNo    String
   gender       String
   bloodgroup   String
-
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   academicSemeter   AcademicSemester @relation(fields: [academicSemeterId], references: [id])
   academicSemeterId String
@@ -88,9 +89,8 @@ model Faculty {
   contactNo    String
   gender       String
   bloodgroup   String
-
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   academicDepartment   AcademicDepartment @relation(fields: [academicDepartmentId], references: [id])
   academicDepartmentId String
