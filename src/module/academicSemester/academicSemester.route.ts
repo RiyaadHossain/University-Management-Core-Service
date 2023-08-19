@@ -4,6 +4,8 @@ import validateRequest from '../../app/middlewares/validateRequest';
 import { academicSemesterValidators } from './academicSemester.validation';
 const route = express.Router();
 
+route.get('/', AcademicSemesterControllers.getAcademicSemesters);
+
 route.post(
   '/',
   validateRequest(academicSemesterValidators.createAcademicSemesterZodSchema),

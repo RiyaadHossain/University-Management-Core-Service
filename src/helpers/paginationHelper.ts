@@ -5,7 +5,7 @@ type IOptions = {
   sortOrder?: string;
 };
 
-type IOptionsResult = {
+export type IPageOptionsResult = {
   page: number;
   limit: number;
   skip: number;
@@ -13,7 +13,7 @@ type IOptionsResult = {
   sortOrder: string;
 };
 
-const calculatePagination = (options: IOptions): IOptionsResult => {
+const calculatePagination = (options: IOptions): IPageOptionsResult => {
   const page = Number(options.page || 1);
   const limit = Number(options.limit || 10);
   const skip = (page - 1) * limit;

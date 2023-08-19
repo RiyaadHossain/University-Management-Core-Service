@@ -17,4 +17,18 @@ const createAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-export const AcademicSemesterControllers = { createAcademicSemester };
+const getAcademicSemesters: RequestHandler = catchAsync(async (req, res) => {
+  const result = await AcademicSemesterServices.getAcademicSemesters(req.body);
+  sendResponse<AcademicSemester[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic Semester fetched successfully.',
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
+export const AcademicSemesterControllers = {
+  createAcademicSemester,
+  getAcademicSemesters,
+};
