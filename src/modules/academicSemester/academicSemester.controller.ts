@@ -4,6 +4,9 @@ import catchAsync from '../../shared/catchAsync';
 import { AcademicSemesterServices } from './academicSemester.services';
 import sendResponse from '../../shared/sendResponse';
 import httpStatus from 'http-status';
+import pick from '../../shared/pick';
+import { paginationFields } from '../../constants/pagination';
+import { academicSemesterFilters } from './academicSemester.constant';
 
 const createAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
   const result = await AcademicSemesterServices.createAcademicSemester(
@@ -18,7 +21,14 @@ const createAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
 });
 
 const getAcademicSemesters: RequestHandler = catchAsync(async (req, res) => {
-  const result = await AcademicSemesterServices.getAcademicSemesters(req.body);
+  const filters = pick(req.query, academicSemesterFilters);
+  const options = pick(req.query, paginationFields);
+  
+  const result = await AcademicSemesterServices.getAcademicSemesters(
+    filters,
+    options
+  );
+
   sendResponse<AcademicSemester[]>(res, {
     statusCode: httpStatus.OK,
     success: true,

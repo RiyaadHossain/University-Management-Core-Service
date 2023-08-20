@@ -1,5 +1,5 @@
 import express from 'express';
-import { AcademicSemesterRoute } from '../../module/academicSemester/academicSemester.route';
+import { AcademicSemesterRoute } from '../../modules/academicSemester/academicSemester.route';
 
 const router = express.Router();
 
