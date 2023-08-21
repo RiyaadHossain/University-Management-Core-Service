@@ -58,6 +58,7 @@ const getStudents = async (
     skip: skip,
     take: limit,
   });
+
   const total = await prisma.student.count();
 
   return {
@@ -78,8 +79,40 @@ const getStudent = async (id: string): Promise<Student | null> => {
   return result;
 };
 
+const updateStudent = async (
+  id: string,
+  data: Partial<Student>
+): Promise<Student | null> => {
+  const result = await prisma.student.update({
+    where: { id },
+    data,
+    include: {
+      academicFaculty: true,
+      academicDepartment: true,
+      academicSemeter: true,
+    },
+  });
+
+  return result;
+};
+
+const deleteStudent = async (id: string): Promise<Student | null> => {
+  const result = await prisma.student.delete({
+    where: { id },
+    include: {
+      academicFaculty: true,
+      academicDepartment: true,
+      academicSemeter: true,
+    },
+  });
+
+  return result;
+};
+
 export const StudentServices = {
   createStudent,
   getStudents,
   getStudent,
+  updateStudent,
+  deleteStudent,
 };

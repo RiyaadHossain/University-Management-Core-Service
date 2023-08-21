@@ -18,7 +18,7 @@ const createAcademicFaculty = async (
   return result;
 };
 
-const getAcademicFacultys = async (
+const getAcademicFaculties = async (
   filters: IFilters,
   options: IPageOptions
 ): Promise<IGenericResponse<AcademicFaculty[]>> => {
@@ -84,6 +84,6 @@ const getAcademicFaculty = async (
 
 export const AcademicFacultyServices = {
   createAcademicFaculty,
-  getAcademicFacultys,
+  getAcademicFaculties,
   getAcademicFaculty,
 };

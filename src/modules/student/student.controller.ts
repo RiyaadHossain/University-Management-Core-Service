@@ -13,7 +13,7 @@ const createStudent: RequestHandler = catchAsync(async (req, res) => {
   sendResponse<Student>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Semester created successfully.',
+    message: 'Student created successfully.',
     data: result,
   });
 });
@@ -27,7 +27,7 @@ const getStudents: RequestHandler = catchAsync(async (req, res) => {
   sendResponse<Student[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Semesters fetched successfully.',
+    message: 'Students fetched successfully.',
     meta: result.meta,
     data: result.data,
   });
@@ -41,7 +41,34 @@ const getStudent: RequestHandler = catchAsync(async (req, res) => {
   sendResponse<Student>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Semester fetched successfully.',
+    message: 'Student fetched successfully.',
+    data: result,
+  });
+});
+
+const updateStudent: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const studentData = req.body;
+
+  const result = await StudentServices.updateStudent(id, studentData);
+
+  sendResponse<Student>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student updated successfully.',
+    data: result,
+  });
+});
+
+const deleteStudent: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+
+  const result = await StudentServices.deleteStudent(id);
+
+  sendResponse<Student>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student deleted successfully.',
     data: result,
   });
 });
@@ -50,4 +77,6 @@ export const StudentControllers = {
   createStudent,
   getStudents,
   getStudent,
+  updateStudent,
+  deleteStudent,
 };

@@ -13,4 +13,20 @@ const createStudentZodSchema = z.object({
   }),
 });
 
-export const studentValidators = { createStudentZodSchema };
+const updateStudentZodSchema = z.object({
+  body: z.object({
+    firstName: z.string().optional(),
+    middleName: z.string().optional(),
+    lastName: z.string().optional(),
+    profileImage: z.string().optional(),
+    email: z.string().optional(),
+    contactNo: z.string().optional(),
+    gender: z.string().optional(),
+    bloodgroup: z.string().optional(),
+  }),
+});
+
+export const StudentValidators = {
+  createStudentZodSchema,
+  updateStudentZodSchema,
+};

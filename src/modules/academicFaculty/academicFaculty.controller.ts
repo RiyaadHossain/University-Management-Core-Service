@@ -20,11 +20,11 @@ const createAcademicFaculty: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-const getAcademicFacultys: RequestHandler = catchAsync(async (req, res) => {
+const getAcademicFaculties: RequestHandler = catchAsync(async (req, res) => {
   const filters = pick(req.query, academicFacultyFilters);
   const options = pick(req.query, paginationFields);
 
-  const result = await AcademicFacultyServices.getAcademicFacultys(
+  const result = await AcademicFacultyServices.getAcademicFaculties(
     filters,
     options
   );
@@ -53,6 +53,6 @@ const getAcademicFaculty: RequestHandler = catchAsync(async (req, res) => {
 
 export const AcademicFacultyControllers = {
   createAcademicFaculty,
-  getAcademicFacultys,
+  getAcademicFaculties,
   getAcademicFaculty,
 };

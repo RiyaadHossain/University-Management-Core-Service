@@ -4,7 +4,7 @@ import validateRequest from '../../app/middlewares/validateRequest';
 import { academicFacultyValidators } from './academicFaculty.validation';
 const route = express.Router();
 
-route.get('/', AcademicFacultyControllers.getAcademicFacultys);
+route.get('/', AcademicFacultyControllers.getAcademicFaculties);
 route.get('/:id', AcademicFacultyControllers.getAcademicFaculty);
 
 route.post(
