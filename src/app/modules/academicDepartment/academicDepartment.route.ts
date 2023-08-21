@@ -1,6 +1,6 @@
 import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
 import { AcademicDepartmentControllers } from './academicDepartment.controller';
-import validateRequest from '../../app/middlewares/validateRequest';
 import { academicDepartmentValidators } from './academicDepartment.validation';
 const route = express.Router();
 
@@ -9,7 +9,9 @@ route.get('/:id', AcademicDepartmentControllers.getAcademicDepartment);
 
 route.post(
   '/',
-  validateRequest(academicDepartmentValidators.createAcademicDepartmentZodSchema),
+  validateRequest(
+    academicDepartmentValidators.createAcademicDepartmentZodSchema
+  ),
   AcademicDepartmentControllers.createAcademicDepartment
 );
 

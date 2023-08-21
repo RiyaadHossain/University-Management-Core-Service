@@ -1,12 +1,12 @@
-import { Student, Prisma } from '@prisma/client';
+import { Prisma, Student } from '@prisma/client';
 import {
   IPageOptions,
   paginationHelpers,
-} from '../../helpers/paginationHelper';
-import { IGenericResponse } from '../../interfaces/common';
-import prisma from '../../shared/prisma';
-import { IFilters } from './student.interface';
+} from '../../../helpers/paginationHelper';
+import { IGenericResponse } from '../../../interfaces/common';
+import prisma from '../../../shared/prisma';
 import { studentSearchAbleFields } from './student.constant';
+import { IFilters } from './student.interface';
 
 const createStudent = async (studentData: Student): Promise<Student> => {
   const result = await prisma.student.create({

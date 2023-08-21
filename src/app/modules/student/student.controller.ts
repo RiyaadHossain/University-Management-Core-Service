@@ -1,12 +1,12 @@
 import { Student } from '@prisma/client';
 import { RequestHandler } from 'express';
 import httpStatus from 'http-status';
-import { paginationFields } from '../../constants/pagination';
-import catchAsync from '../../shared/catchAsync';
-import pick from '../../shared/pick';
-import sendResponse from '../../shared/sendResponse';
-import { StudentServices } from './student.services';
+import { paginationFields } from '../../../constants/pagination';
+import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
+import sendResponse from '../../../shared/sendResponse';
 import { studentFilters } from './student.constant';
+import { StudentServices } from './student.services';
 
 const createStudent: RequestHandler = catchAsync(async (req, res) => {
   const result = await StudentServices.createStudent(req.body);

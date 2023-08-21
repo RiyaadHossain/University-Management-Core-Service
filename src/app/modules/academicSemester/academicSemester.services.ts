@@ -1,12 +1,12 @@
 import { AcademicSemester, Prisma } from '@prisma/client';
-import prisma from '../../shared/prisma';
 import {
   IPageOptions,
   paginationHelpers,
-} from '../../helpers/paginationHelper';
-import { IGenericResponse } from '../../interfaces/common';
-import { IFilters } from './academicSemester.interface';
+} from '../../../helpers/paginationHelper';
+import { IGenericResponse } from '../../../interfaces/common';
+import prisma from '../../../shared/prisma';
 import { academicSemestersSearchAbleFields } from './academicSemester.constant';
+import { IFilters } from './academicSemester.interface';
 
 const createAcademicSemester = async (
   academicSemesterData: AcademicSemester
@@ -72,7 +72,9 @@ const getAcademicSemesters = async (
   };
 };
 
-const getAcademicSemester = async (id: string): Promise<AcademicSemester | null> => {
+const getAcademicSemester = async (
+  id: string
+): Promise<AcademicSemester | null> => {
   const result = await prisma.academicSemester.findUnique({
     where: { id },
   });

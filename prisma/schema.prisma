@@ -11,11 +11,11 @@ datasource db {
 }
 
 model AcademicFaculty {
-  id                  String               @id @default(uuid())
-  title               String
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  
+  id        String   @id @default(uuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   students            Student[]
   academicDepartments AcademicDepartment[]
   faculties           Faculty[]
@@ -53,7 +53,7 @@ model AcademicSemester {
 }
 
 model Student {
-  id           String @id @default(uuid())
+  id           String   @id @default(uuid())
   studentId    String
   firstName    String
   middleName   String
@@ -63,8 +63,8 @@ model Student {
   contactNo    String
   gender       String
   bloodgroup   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   academicSemeter   AcademicSemester @relation(fields: [academicSemeterId], references: [id])
   academicSemeterId String
@@ -79,7 +79,7 @@ model Student {
 }
 
 model Faculty {
-  id           String @id @default(uuid())
+  id           String   @id @default(uuid())
   facultyId    String
   firstName    String
   middleName   String
@@ -89,8 +89,8 @@ model Faculty {
   contactNo    String
   gender       String
   bloodgroup   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   academicDepartment   AcademicDepartment @relation(fields: [academicDepartmentId], references: [id])
   academicDepartmentId String
@@ -99,4 +99,25 @@ model Faculty {
   academicFacultyId String
 
   @@map("faculties")
+}
+
+model Building {
+  id   String @id @default(uuid())
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rooms     Room[]
+}
+
+model Room {
+  id    String @id @default(uuid())
+  name  String @unique
+  floor String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  building   Building @relation(fields: [buildingId], references: [id])
+  buildingId String
 }

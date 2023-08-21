@@ -1,21 +1,19 @@
 import { Faculty } from '@prisma/client';
 import { RequestHandler } from 'express';
 import httpStatus from 'http-status';
-import { paginationFields } from '../../constants/pagination';
-import catchAsync from '../../shared/catchAsync';
-import pick from '../../shared/pick';
-import sendResponse from '../../shared/sendResponse';
-import { FacultyServices } from './faculty.services';
+import { paginationFields } from '../../../constants/pagination';
+import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
+import sendResponse from '../../../shared/sendResponse';
 import { facultyFilters } from './faculty.constant';
+import { FacultyServices } from './faculty.services';
 
 const createFaculty: RequestHandler = catchAsync(async (req, res) => {
-  const result = await FacultyServices.createFaculty(
-    req.body
-  );
+  const result = await FacultyServices.createFaculty(req.body);
   sendResponse<Faculty>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Semester created successfully.',
+    message: 'Faculty created successfully.',
     data: result,
   });
 });
@@ -24,15 +22,12 @@ const getFaculties: RequestHandler = catchAsync(async (req, res) => {
   const filters = pick(req.query, facultyFilters);
   const options = pick(req.query, paginationFields);
 
-  const result = await FacultyServices.getFaculties(
-    filters,
-    options
-  );
+  const result = await FacultyServices.getFaculties(filters, options);
 
   sendResponse<Faculty[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Semesters fetched successfully.',
+    message: 'Facultys fetched successfully.',
     meta: result.meta,
     data: result.data,
   });
@@ -46,7 +41,7 @@ const getFaculty: RequestHandler = catchAsync(async (req, res) => {
   sendResponse<Faculty>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Semester fetched successfully.',
+    message: 'Faculty fetched successfully.',
     data: result,
   });
 });

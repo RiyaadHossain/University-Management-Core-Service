@@ -2,9 +2,9 @@ import { AcademicFaculty, Prisma } from '@prisma/client';
 import {
   IPageOptions,
   paginationHelpers,
-} from '../../helpers/paginationHelper';
-import { IGenericResponse } from '../../interfaces/common';
-import prisma from '../../shared/prisma';
+} from '../../../helpers/paginationHelper';
+import { IGenericResponse } from '../../../interfaces/common';
+import prisma from '../../../shared/prisma';
 import { academicFacultySearchAbleFields } from './academicFaculty.constant';
 import { IFilters } from './academicFaculty.interface';
 
