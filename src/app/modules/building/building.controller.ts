@@ -22,10 +22,7 @@ const getBuildings: RequestHandler = catchAsync(async (req, res) => {
   const filters = pick(req.query, buildingFilters);
   const options = pick(req.query, paginationFields);
 
-  const result = await BuildingServices.getBuildings(
-    filters,
-    options
-  );
+  const result = await BuildingServices.getBuildings(filters, options);
 
   sendResponse<Building[]>(res, {
     statusCode: httpStatus.OK,
@@ -49,8 +46,37 @@ const getBuilding: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateBuilding: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const buildingData = req.body;
+
+  const result = await BuildingServices.updateBuilding(id, buildingData);
+
+  sendResponse<Building>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Building updated successfully.',
+    data: result,
+  });
+});
+
+const deleteBuilding: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+
+  const result = await BuildingServices.deleteBuilding(id);
+
+  sendResponse<Building>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Building deleted successfully.',
+    data: result,
+  });
+});
+
 export const BuildingControllers = {
   createBuilding,
   getBuildings,
   getBuilding,
+  updateBuilding,
+  deleteBuilding,
 };

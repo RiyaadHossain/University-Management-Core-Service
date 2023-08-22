@@ -6,6 +6,13 @@ const createBuildingZodSchema = z.object({
   }),
 });
 
-export const buildingValidators = {
+const updateBuildingZodSchema = z.object({
+  body: z.object({
+    name: z.string().optional(),
+  }),
+});
+
+export const BuildingValidators = {
   createBuildingZodSchema,
+  updateBuildingZodSchema,
 };

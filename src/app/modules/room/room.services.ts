@@ -78,8 +78,30 @@ const getRoom = async (id: string): Promise<Room | null> => {
   return result;
 };
 
+const updateRoom = async (
+  id: string,
+  data: Partial<Room>
+): Promise<Room | null> => {
+  const result = await prisma.room.update({
+    where: { id },
+    data,
+  });
+
+  return result;
+};
+
+const deleteRoom = async (id: string): Promise<Room | null> => {
+  const result = await prisma.room.delete({
+    where: { id },
+  });
+
+  return result;
+};
+
 export const RoomServices = {
   createRoom,
   getRooms,
   getRoom,
+  updateRoom,
+  deleteRoom,
 };

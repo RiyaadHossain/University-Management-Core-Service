@@ -8,9 +8,7 @@ import prisma from '../../../shared/prisma';
 import { IFilters } from './building.interface';
 import { buildingSearchAbleFields } from './building.constant';
 
-const createBuilding = async (
-  buildingData: Building
-): Promise<Building> => {
+const createBuilding = async (buildingData: Building): Promise<Building> => {
   const result = await prisma.building.create({
     data: buildingData,
   });
@@ -60,10 +58,28 @@ const getBuildings = async (
   };
 };
 
-const getBuilding = async (
-  id: string
-): Promise<Building | null> => {
+const getBuilding = async (id: string): Promise<Building | null> => {
   const result = await prisma.building.findUnique({
+    where: { id },
+  });
+
+  return result;
+};
+
+const updateBuilding = async (
+  id: string,
+  data: Partial<Building>
+): Promise<Building | null> => {
+  const result = await prisma.building.update({
+    where: { id },
+    data,
+  });
+
+  return result;
+};
+
+const deleteBuilding = async (id: string): Promise<Building | null> => {
+  const result = await prisma.building.delete({
     where: { id },
   });
 
@@ -74,4 +90,6 @@ export const BuildingServices = {
   createBuilding,
   getBuildings,
   getBuilding,
+  updateBuilding,
+  deleteBuilding,
 };

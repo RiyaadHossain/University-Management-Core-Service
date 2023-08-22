@@ -82,8 +82,32 @@ const getAcademicSemester = async (
   return result;
 };
 
+const updateAcademicSemester = async (
+  id: string,
+  data: Partial<AcademicSemester>
+): Promise<AcademicSemester | null> => {
+  const result = await prisma.academicSemester.update({
+    where: { id },
+    data,
+  });
+
+  return result;
+};
+
+const deleteAcademicSemester = async (
+  id: string
+): Promise<AcademicSemester | null> => {
+  const result = await prisma.academicSemester.delete({
+    where: { id },
+  });
+
+  return result;
+};
+
 export const AcademicSemesterServices = {
   createAcademicSemester,
   getAcademicSemesters,
   getAcademicSemester,
+  updateAcademicSemester,
+  deleteAcademicSemester,
 };

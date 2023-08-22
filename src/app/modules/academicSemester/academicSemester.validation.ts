@@ -10,4 +10,17 @@ const createAcademicSemesterZodSchema = z.object({
   }),
 });
 
-export const academicSemesterValidators = { createAcademicSemesterZodSchema };
+const updateAcademicSemesterZodSchema = z.object({
+  body: z.object({
+    title: z.string().optional(),
+    year: z.number().optional(),
+    code: z.string().optional(),
+    startMonth: z.string().optional(),
+    endMonth: z.string().optional(),
+  }),
+});
+
+export const AcademicSemesterValidators = {
+  createAcademicSemesterZodSchema,
+  updateAcademicSemesterZodSchema,
+};
