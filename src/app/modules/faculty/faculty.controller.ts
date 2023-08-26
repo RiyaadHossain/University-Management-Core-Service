@@ -1,4 +1,4 @@
-import { Faculty } from '@prisma/client';
+import { CourseFaculty, Faculty } from '@prisma/client';
 import { RequestHandler } from 'express';
 import httpStatus from 'http-status';
 import { paginationFields } from '../../../constants/pagination';
@@ -73,10 +73,38 @@ const deleteFaculty: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const assignCourses: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const payload = req.body;
+  const result = await FacultyServices.assignCourses(id, payload);
+
+  sendResponse<CourseFaculty[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Courses assigned successfully.',
+    data: result,
+  });
+});
+
+const removeCourses: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const payload = req.body;
+  const result = await FacultyServices.removeCourses(id, payload);
+
+  sendResponse<CourseFaculty[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Courses removed successfully.',
+    data: result,
+  });
+});
+
 export const FacultyControllers = {
   createFaculty,
   getFaculties,
   getFaculty,
   updateFaculty,
   deleteFaculty,
+  assignCourses,
+  removeCourses
 };

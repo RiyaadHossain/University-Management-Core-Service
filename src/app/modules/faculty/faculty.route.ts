@@ -27,4 +27,19 @@ route.delete(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   FacultyControllers.deleteFaculty
 );
+
+route.post(
+  '/:id/assign-faculties',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  validateRequest(FacultyValidators.assignOrRemoveCoursesZodSchema),
+  FacultyControllers.assignCourses
+);
+
+route.delete(
+  '/:id/remove-faculties',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  validateRequest(FacultyValidators.assignOrRemoveCoursesZodSchema),
+  FacultyControllers.removeCourses
+);
+
 export const FacultyRoute = route;
