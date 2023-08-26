@@ -91,7 +91,7 @@ const removeFaculties: RequestHandler = catchAsync(async (req, res) => {
   const payload = req.body;
   const result = await CourseServices.removeFaculties(id, payload);
 
-  sendResponse(res, {
+  sendResponse<CourseFaculty[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Faculties removed successfully.',

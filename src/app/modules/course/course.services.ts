@@ -204,21 +204,10 @@ const updateCourse = async (
 };
 
 const deleteCourse = async (id: string): Promise<Course | null> => {
+
   const result = await prisma.$transaction(async transactionClient => {
     const deleted = await transactionClient.course.delete({
-      where: { id },
-      include: {
-        preRequisite: {
-          include: {
-            course: true,
-          },
-        },
-        preRequisiteFor: {
-          include: {
-            preRequisite: true,
-          },
-        },
-      },
+      where: { id }
     });
 
     if (!deleted) {
@@ -267,7 +256,7 @@ const assignFaculties = async (
 const removeFaculties = async (
   id: string,
   payload: { faculties: string[] }
-) => {
+): Promise<CourseFaculty[]> => {
   await prisma.courseFaculty.deleteMany({
     where: { courseId: id, facultyId: { in: payload.faculties } },
   });
