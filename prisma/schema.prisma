@@ -161,3 +161,22 @@ model CourseFaculty {
   @@id([courseId, facultyId])
   @@map("course_faculties")
 }
+
+model SemesterRegistration {
+  id String @id @default(uuid())
+  startDate DateTime
+  endDate DateTime
+  status SemesterRegistrationStatus
+  minCredit Int
+  maxCredit Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("semester_registrations")
+}
+
+enum SemesterRegistrationStatus {
+  UPCOMING
+  ONGOING
+  ENDED
+}
