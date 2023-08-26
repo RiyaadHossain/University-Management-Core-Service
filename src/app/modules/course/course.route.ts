@@ -28,4 +28,18 @@ route.delete(
   CourseControllers.deleteCourse
 );
 
+route.post(
+  '/:id/assign-faculties',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  validateRequest(CourseValidators.assignOrRemoveFacultiesZodSchema),
+  CourseControllers.assignFaculties
+);
+
+route.delete(
+  '/:id/remove-faculties',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  validateRequest(CourseValidators.assignOrRemoveFacultiesZodSchema),
+  CourseControllers.removeFaculties
+);
+
 export const CourseRoute = route;
