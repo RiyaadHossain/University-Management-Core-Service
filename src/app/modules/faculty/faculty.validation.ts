@@ -28,8 +28,8 @@ const updateFacultyZodSchema = z.object({
 
 const assignOrRemoveCoursesZodSchema = z.object({
   body: z.object({
-    faculties: z
-      .string({ required_error: "Faculties' ids are required" })
+    courses: z
+      .string({ required_error: "Courses' ids are required" })
       .array(),
   }),
 });

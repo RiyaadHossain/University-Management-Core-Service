@@ -5,12 +5,24 @@ import {
 } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
-import { academicSemestersSearchAbleFields } from './academicSemester.constant';
+import {
+  academicSemesterTitleCodeMap,
+  academicSemestersSearchAbleFields,
+} from './academicSemester.constant';
 import { IFilters } from './academicSemester.interface';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 const createAcademicSemester = async (
   academicSemesterData: AcademicSemester
 ): Promise<AcademicSemester> => {
+  // Semester code validation
+  if (
+    academicSemesterTitleCodeMap[academicSemesterData.title] !==
+    academicSemesterData.code
+  ) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Semester code!');
+  }
   const result = await prisma.academicSemester.create({
     data: academicSemesterData,
   });

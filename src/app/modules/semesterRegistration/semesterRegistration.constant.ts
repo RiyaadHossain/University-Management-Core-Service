@@ -1,8 +1,3 @@
-export const semesterRegistrationFilters = [
-  'searchTerm',
-  'status'
-];
+export const semesterRegistrationFilters = ['searchTerm', 'status'];
 
-export const semesterRegistrationSearchAbleFields = [
-  'status'
-];
+export const semesterRegistrationSearchAbleFields = ['status'];

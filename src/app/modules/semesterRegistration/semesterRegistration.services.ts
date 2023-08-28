@@ -17,6 +17,7 @@ import httpStatus from 'http-status';
 const createSemesterRegistration = async (
   semesterRegistrationData: SemesterRegistration
 ): Promise<SemesterRegistration> => {
+  // Business Logic
   const semesterExist = await prisma.semesterRegistration.findFirst({
     where: {
       OR: [
@@ -107,6 +108,24 @@ const updateSemesterRegistration = async (
   id: string,
   data: Partial<SemesterRegistration>
 ): Promise<SemesterRegistration | null> => {
+  const isExist = await prisma.semesterRegistration.findUnique({
+    where: {
+      id: id,
+    },
+  });
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'No data found!');
+  }
+
+  if (data.status && isExist.status === SemesterRegistrationStatus.UPCOMING && data.status !== SemesterRegistrationStatus.ONGOING) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Semester status can only be updated UPCOMING to ONGOING")
+  }
+
+  if (data.status && isExist.status === SemesterRegistrationStatus.ONGOING && data.status !== SemesterRegistrationStatus.ENDED) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Semester status can only be updated ONGOING to ENDED")
+  }
+
   const result = await prisma.semesterRegistration.update({
     where: { id },
     data,

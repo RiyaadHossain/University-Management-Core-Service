@@ -13,7 +13,7 @@ const createSemesterRegistration: RequestHandler = catchAsync(async (req, res) =
   sendResponse<SemesterRegistration>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Faculty created successfully.',
+    message: 'Semester Registration created successfully.',
     data: result,
   });
 });
@@ -30,7 +30,7 @@ const getSemesterRegistrations: RequestHandler = catchAsync(async (req, res) => 
   sendResponse<SemesterRegistration[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Facultys fetched successfully.',
+    message: 'Semester Registrations fetched successfully.',
     meta: result.meta,
     data: result.data,
   });
@@ -44,7 +44,7 @@ const getSemesterRegistration: RequestHandler = catchAsync(async (req, res) => {
   sendResponse<SemesterRegistration>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Faculty fetched successfully.',
+    message: 'Semester Registration fetched successfully.',
     data: result,
   });
 });
