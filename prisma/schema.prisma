@@ -34,20 +34,21 @@ model AcademicDepartment {
 
   academicFaculty   AcademicFaculty @relation(fields: [academicFacultyId], references: [id])
   academicFacultyId String
+  offeredCourses    OfferedCourse[]
 
   @@map("academic_departments")
 }
 
 model AcademicSemester {
-  id                   String                 @id @default(uuid())
-  year                 Int
-  title                String
-  code                 String
-  startMonth           String
-  endMonth             String
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @updatedAt
-  students             Student[]
+  id                    String                 @id @default(uuid())
+  year                  Int
+  title                 String
+  code                  String
+  startMonth            String
+  endMonth              String
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  students              Student[]
   semesterRegistrations SemesterRegistration[]
 
   @@map("academic_semesters")
@@ -139,6 +140,7 @@ model Course {
   preRequisite    Prerequisite[]  @relation("course")
   preRequisiteFor Prerequisite[]  @relation("preRequisite")
   faculties       CourseFaculty[]
+  offeredCourses  OfferedCourse[]
 }
 
 model Prerequisite {
@@ -174,8 +176,9 @@ model SemesterRegistration {
   academicSemesterId String
   academicSemester   AcademicSemester @relation(fields: [academicSemesterId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  offeredCourses OfferedCourse[]
 
   @@map("semester_registrations")
 }
@@ -184,4 +187,16 @@ enum SemesterRegistrationStatus {
   UPCOMING
   ONGOING
   ENDED
+}
+
+model OfferedCourse {
+  id String @unique @default(uuid())
+
+  courseId               String
+  academicDepartmentId   String
+  semesterRegistrationId String
+
+  course               Course               @relation(fields: [courseId], references: [id])
+  academicDepartment   AcademicDepartment   @relation(fields: [academicDepartmentId], references: [id])
+  semesterRegistration SemesterRegistration @relation(fields: [semesterRegistrationId], references: [id])
 }
