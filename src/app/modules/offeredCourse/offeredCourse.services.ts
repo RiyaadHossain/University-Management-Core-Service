@@ -1,69 +1,52 @@
-import { Prisma, Course, CourseFaculty } from '@prisma/client';
+import { Prisma, OfferedCourse } from '@prisma/client';
 import {
   IPageOptions,
   paginationHelpers,
 } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
-import { courseSearchAbleFields } from './offeredCourse.constant';
-import {
-  ICourseData,
-  IFilters,
-  IPrerequisiteCourse,
-} from './offeredCourse.interface';
-import ApiError from '../../../errors/ApiError';
-import httpStatus from 'http-status';
+import { offeredCourseSearchAbleFields } from './offeredCourse.constant';
+import { IFilters, IOfferedCourse } from './offeredCourse.interface';
 import { asyncForEach } from '../../../shared/utils';
 
-const createCourse = async (data: ICourseData): Promise<Course | null> => {
-  const { preRequisities, ...courseData } = data;
-  const newCourse = await prisma.$transaction(async transactionClient => {
-    const result = await transactionClient.course.create({
-      data: courseData,
+const createOfferedCourse = async (
+  offeredCourseData: IOfferedCourse
+): Promise<OfferedCourse[]> => {
+  const result: OfferedCourse[] = [];
+
+  const { courseIds, academicDepartmentId, semesterRegistrationId } =
+    offeredCourseData;
+
+  // Create OfferedCourse document with each courseId
+  await asyncForEach(courseIds, async (courseId: string) => {
+    const isExist = await prisma.offeredCourse.findFirst({
+      where: {
+        courseId,
+        academicDepartmentId,
+        semesterRegistrationId,
+      },
     });
 
-    if (!result) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create course');
-    }
+    if (!isExist) {
+      const offeredCourse = await prisma.offeredCourse.create({
+        data: {
+          courseId,
+          academicDepartmentId,
+          semesterRegistrationId,
+        },
+      });
 
-    if (preRequisities && preRequisities.length) {
-      for (const course of preRequisities) {
-        await transactionClient.prerequisite.create({
-          data: { courseId: result.id, preRequisiteId: course.courseId },
-        });
-      }
+      result.push(offeredCourse);
     }
-
-    return result;
   });
 
-  if (!newCourse) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to create course');
-  }
-
-  const responseData = await prisma.course.findUnique({
-    where: { id: newCourse.id },
-    include: {
-      preRequisite: {
-        include: {
-          course: true,
-        },
-      },
-      preRequisiteFor: {
-        include: {
-          course: true,
-        },
-      },
-    },
-  });
-
-  return responseData;
+  return result;
 };
 
-const getCourses = async (
+const getOfferedCourses = async (
   filters: IFilters,
   options: IPageOptions
-): Promise<IGenericResponse<Course[]>> => {
+): Promise<IGenericResponse<OfferedCourse[]>> => {
   // Pagination and Sorting
   const { limit, skip, page, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
@@ -74,7 +57,7 @@ const getCourses = async (
   // Searching
   if (searchTerm) {
     orCondition.push({
-      OR: courseSearchAbleFields.map(field => ({
+      OR: offeredCourseSearchAbleFields.map(field => ({
         [field]: { contains: searchTerm, mode: 'insensitive' },
       })),
     });
@@ -92,17 +75,17 @@ const getCourses = async (
     });
   }
 
-  const whereCondition: Prisma.CourseWhereInput = orCondition.length
+  const whereCondition: Prisma.OfferedCourseWhereInput = orCondition.length
     ? { AND: orCondition }
     : {};
 
-  const result = await prisma.course.findMany({
+  const result = await prisma.offeredCourse.findMany({
     where: whereCondition,
     orderBy: { [sortBy]: sortOrder },
     skip: skip,
     take: limit,
   });
-  const total = await prisma.course.count();
+  const total = await prisma.offeredCourse.count();
 
   return {
     meta: {
@@ -114,170 +97,40 @@ const getCourses = async (
   };
 };
 
-const getCourse = async (id: string): Promise<Course | null> => {
-  const result = await prisma.course.findUnique({
+const getOfferedCourse = async (id: string): Promise<OfferedCourse | null> => {
+  const result = await prisma.offeredCourse.findUnique({
     where: { id },
-    include: {
-      preRequisite: {
-        include: {
-          course: true,
-        },
-      },
-      preRequisiteFor: {
-        include: {
-          preRequisite: true,
-        },
-      },
-    },
   });
 
   return result;
 };
 
-const updateCourse = async (
+const updateOfferedCourse = async (
   id: string,
-  data: Partial<ICourseData>
-): Promise<Course | null> => {
-  const { preRequisities, ...courseData } = data;
-
-  await prisma.$transaction(async transactionClient => {
-    const result = await transactionClient.course.update({
-      where: { id },
-      data: courseData,
-    });
-
-    if (!result) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to update course');
-    }
-
-    if (preRequisities && preRequisities.length) {
-      const deletedPreRequisites = preRequisities.filter(
-        preRequisite => preRequisite.isDeleted
-      );
-      const newPreRequisites = preRequisities.filter(
-        preRequisite => !preRequisite.isDeleted
-      );
-
-      // Delete Prerequisite courses data
-      await asyncForEach(
-        deletedPreRequisites,
-        async (preRequisiteCourse: IPrerequisiteCourse) => {
-          await transactionClient.prerequisite.deleteMany({
-            where: {
-              AND: [
-                { courseId: id },
-                { preRequisiteId: preRequisiteCourse.courseId },
-              ],
-            },
-          });
-        }
-      );
-
-      // Create new Prerequisite courses data
-      await asyncForEach(
-        newPreRequisites,
-        async (preRequisiteCourse: IPrerequisiteCourse) => {
-          await transactionClient.prerequisite.create({
-            data: {
-              courseId: id,
-              preRequisiteId: preRequisiteCourse.courseId,
-            },
-          });
-        }
-      );
-    }
-  });
-
-  const responseData = await prisma.course.findUnique({
+  data: Partial<OfferedCourse>
+): Promise<OfferedCourse | null> => {
+  const result = await prisma.offeredCourse.update({
     where: { id },
-    include: {
-      preRequisite: {
-        include: {
-          course: true,
-        },
-      },
-      preRequisiteFor: {
-        include: {
-          preRequisite: true,
-        },
-      },
-    },
-  });
-
-  return responseData;
-};
-
-const deleteCourse = async (id: string): Promise<Course | null> => {
-  const result = await prisma.$transaction(async transactionClient => {
-    const deleted = await transactionClient.course.delete({
-      where: { id },
-    });
-
-    if (!deleted) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to delete course');
-    }
-
-    const preRequisiteDeleted = await transactionClient.prerequisite.deleteMany(
-      {
-        where: {
-          OR: [{ courseId: id }, { preRequisiteId: id }],
-        },
-      }
-    );
-
-    if (!preRequisiteDeleted) {
-      throw new ApiError(httpStatus.BAD_REQUEST, 'Failed to delete course');
-    }
-
-    return deleted;
+    data,
   });
 
   return result;
 };
 
-const assignFaculties = async (
-  id: string,
-  payload: { faculties: string[] }
-): Promise<CourseFaculty[]> => {
-  await prisma.courseFaculty.createMany({
-    data: payload.faculties.map(faculty => ({
-      courseId: id,
-      facultyId: faculty,
-    })),
-  });
-
-  const result = await prisma.courseFaculty.findMany({
-    where: {
-      courseId: id,
-    },
-    include: { faculty: true, course: true },
+const deleteOfferedCourse = async (
+  id: string
+): Promise<OfferedCourse | null> => {
+  const result = await prisma.offeredCourse.delete({
+    where: { id },
   });
 
   return result;
 };
 
-const removeFaculties = async (
-  id: string,
-  payload: { faculties: string[] }
-): Promise<CourseFaculty[]> => {
-  await prisma.courseFaculty.deleteMany({
-    where: { courseId: id, facultyId: { in: payload.faculties } },
-  });
-
-  const responseData = await prisma.courseFaculty.findMany({
-    where: { courseId: id },
-    include: { faculty: true, course: true },
-  });
-
-  return responseData;
-};
-
-export const CourseServices = {
-  createCourse,
-  getCourses,
-  getCourse,
-  updateCourse,
-  deleteCourse,
-  assignFaculties,
-  removeFaculties,
+export const OfferedCourseServices = {
+  createOfferedCourse,
+  getOfferedCourses,
+  getOfferedCourse,
+  updateOfferedCourse,
+  deleteOfferedCourse,
 };

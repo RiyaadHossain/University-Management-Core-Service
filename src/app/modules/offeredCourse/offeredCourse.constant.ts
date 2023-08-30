@@ -1,12 +1,12 @@
-export const courseFilters = [
+export const offeredCourseFilters = [
   'searchTerm',
-  'title'
+  'name'
 ];
 
-export const courseSearchAbleFields = [
-  'title'
+export const offeredCourseSearchAbleFields = [
+  'name'
 ];
 
-export const courseFilterAbleFields = [
-  'title'
+export const offeredCourseFilterAbleFields = [
+  'name'
 ];

@@ -94,6 +94,11 @@
             "date": 1693195432633,
             "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\successes\\phu-2023-28-08-10-success.log",
             "hash": "b6a90404826dab85c0198b232892778804e53cd6f3dd036f9fd7129fdc5b9886"
+        },
+        {
+            "date": 1693361907824,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\successes\\phu-2023-30-08-08-success.log",
+            "hash": "2226f43cfa27cc191603c1ede2f90f8bf26a696fa3b783f1d642822e9211da5e"
         }
     ],
     "hashType": "sha256"

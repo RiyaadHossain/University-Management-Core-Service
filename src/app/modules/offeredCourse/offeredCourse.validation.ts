@@ -1,29 +1,22 @@
 import { z } from 'zod';
 
-const createCourseZodSchema = z.object({
+const createOfferedCourseZodSchema = z.object({
   body: z.object({
-    title: z.string({ required_error: 'Title is required' }),
-    // code: z.string({ required_error: 'Code is required' }),
-    credits: z.number({ required_error: 'Credits is required' }),
+    courseId: z.string({ required_error: 'Course Id is required' }),
+    academicDepartmentId: z.string({ required_error: 'Academic Department Id is required' }),
+    semesterRegistrationId: z.string({ required_error: 'Semester Registration Id is required' }),
   }),
 });
 
-const updateCourseZodSchema = z.object({
+const updateOfferedCourseZodSchema = z.object({
   body: z.object({
-    title: z.string().optional(),
-    code: z.string().optional(),
-    credits: z.number().optional(),
+    courseId: z.string().optional(),
+    academicDepartmentId: z.string().optional(),
+    semesterRegistrationId: z.string().optional(),
   }),
 });
 
-const assignOrRemoveFacultiesZodSchema = z.object({
-  body: z.object({
-    faculties: z.string({required_error: "Faculties' ids are required"}).array(),
-  }),
-});
-
-export const CourseValidators = {
-  createCourseZodSchema,
-  updateCourseZodSchema,
-  assignOrRemoveFacultiesZodSchema,
+export const OfferedCourseValidators = {
+  createOfferedCourseZodSchema,
+  updateOfferedCourseZodSchema,
 };

@@ -5,9 +5,3 @@ export type IFilters = {
   startMonth?: string;
   endMonth?: string;
 };
-
-export type IOfferedCourse = {
-  courseIds: string[];
-  academicDepartmentId: string;
-  semesterRegistrationId: string;
-};

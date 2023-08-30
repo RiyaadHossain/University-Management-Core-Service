@@ -1,45 +1,31 @@
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
-import { CourseControllers } from './offeredCourse.controller';
-import { CourseValidators } from './offeredCourse.validation';
+import { OfferedCourseControllers } from './offeredCourse.controller';
+import { OfferedCourseValidators } from './offeredCourse.validation';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import auth from '../../middlewares/auth';
 const route = express.Router();
 
-route.get('/', CourseControllers.getCourses);
-route.get('/:id', CourseControllers.getCourse);
+route.get('/', OfferedCourseControllers.getOfferedCourses);
+route.get('/:id', OfferedCourseControllers.getOfferedCourse);
 
 route.post(
   '/',
-  validateRequest(CourseValidators.createCourseZodSchema),
-  CourseControllers.createCourse
+  validateRequest(OfferedCourseValidators.createOfferedCourseZodSchema),
+  OfferedCourseControllers.createOfferedCourse
 );
 
 route.patch(
   '/:id',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  validateRequest(CourseValidators.updateCourseZodSchema),
-  CourseControllers.updateCourse
+  validateRequest(OfferedCourseValidators.updateOfferedCourseZodSchema),
+  OfferedCourseControllers.updateOfferedCourse
 );
 
 route.delete(
   '/:id',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  CourseControllers.deleteCourse
-);
-
-route.post(
-  '/:id/assign-faculties',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  validateRequest(CourseValidators.assignOrRemoveFacultiesZodSchema),
-  CourseControllers.assignFaculties
-);
-
-route.delete(
-  '/:id/remove-faculties',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  validateRequest(CourseValidators.assignOrRemoveFacultiesZodSchema),
-  CourseControllers.removeFaculties
+  OfferedCourseControllers.deleteOfferedCourse
 );
 
 export const OfferedCourseRoute = route;
