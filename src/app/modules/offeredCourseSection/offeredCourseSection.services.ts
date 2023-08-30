@@ -30,6 +30,10 @@ const createOfferedCourseSection = async (
 
   const result = await prisma.offeredCourseSection.create({
     data: offeredCourseSectionData,
+    include: {
+      offeredCourse: true,
+      semesterRegistration: true,
+    },
   });
 
   return result;

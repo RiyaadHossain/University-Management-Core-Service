@@ -99,6 +99,11 @@
             "date": 1693361907833,
             "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-30-08-08-error.log",
             "hash": "043e010307651d8f0c5e24eb52dc9cba0b5c20a7635ad76590f8693a5bd9c200"
+        },
+        {
+            "date": 1693364731729,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-30-08-09-error.log",
+            "hash": "0cea5b37d98244bd024390b62cb4d92dfad21dc69204a55d065426cb467071f0"
         }
     ],
     "hashType": "sha256"

@@ -51,11 +51,11 @@ const moduleRoutes = [
     route: SemesterRegistrationRoute,
   },
   {
-    path: '/offered-course',
+    path: '/offered-courses',
     route: OfferedCourseRoute,
   },
   {
-    path: '/offered-course-section',
+    path: '/offered-course-sections',
     route: OfferedCourseSectionRoute,
   },
 ];

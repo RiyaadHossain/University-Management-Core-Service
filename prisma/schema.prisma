@@ -214,7 +214,7 @@ model OfferedCourseSection {
 
   title             String
   maxCapacity       Int
-  curretnlyEnrolled Int
+  currentlyEnrolled Int
 
   offeredCourseId        String
   semesterRegistrationId String
