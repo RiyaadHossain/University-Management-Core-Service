@@ -97,9 +97,10 @@ model Faculty {
   academicDepartment   AcademicDepartment @relation(fields: [academicDepartmentId], references: [id])
   academicDepartmentId String
 
-  academicFaculty   AcademicFaculty @relation(fields: [academicFacultyId], references: [id])
-  academicFacultyId String
-  courses           CourseFaculty[]
+  academicFaculty             AcademicFaculty              @relation(fields: [academicFacultyId], references: [id])
+  academicFacultyId           String
+  courses                     CourseFaculty[]
+  offeredCourseClassSchedules OfferedCourseClassSchedule[]
 
   @@map("faculties")
 }
@@ -123,8 +124,9 @@ model Room {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  building   Building @relation(fields: [buildingId], references: [id])
-  buildingId String
+  building                    Building                     @relation(fields: [buildingId], references: [id])
+  buildingId                  String
+  offeredCourseClassSchedules OfferedCourseClassSchedule[]
 
   @@map("rooms")
 }
@@ -176,10 +178,11 @@ model SemesterRegistration {
   academicSemesterId String
   academicSemester   AcademicSemester @relation(fields: [academicSemesterId], references: [id])
 
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  offeredCourses        OfferedCourse[]
-  offeredCourseSections OfferedCourseSection[]
+  createdAt                   DateTime                     @default(now())
+  updatedAt                   DateTime                     @updatedAt
+  offeredCourses              OfferedCourse[]
+  offeredCourseSections       OfferedCourseSection[]
+  offeredCourseClassSchedules OfferedCourseClassSchedule[]
 
   @@map("semester_registrations")
 }
@@ -222,8 +225,45 @@ model OfferedCourseSection {
   offeredCourse        OfferedCourse        @relation(fields: [offeredCourseId], references: [id])
   semesterRegistration SemesterRegistration @relation(fields: [semesterRegistrationId], references: [id])
 
+  createdAt                   DateTime                     @default(now())
+  updatedAt                   DateTime                     @updatedAt
+  offeredCourseClassSchedules OfferedCourseClassSchedule[]
+
+  @@map("offered_course_sections")
+}
+
+model OfferedCourseClassSchedule {
+  id String @unique @default(uuid())
+
+  startTime String
+  endTime   String
+
+  dayOfWeek WeekDays
+
+  offeredCourseSectionId String
+  offeredCourseSection   OfferedCourseSection @relation(fields: [offeredCourseSectionId], references: [id])
+
+  semesterRegistrationId String
+  semesterRegistration   SemesterRegistration @relation(fields: [semesterRegistrationId], references: [id])
+
+  roodId String
+  room   Room   @relation(fields: [roodId], references: [id])
+
+  facultyId String
+  faculty   Faculty @relation(fields: [facultyId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("offered_course_sections")
+  @@map("offered_course_class_schedules")
+}
+
+enum WeekDays {
+  SATURDAY
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
 }

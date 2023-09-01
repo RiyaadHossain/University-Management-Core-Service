@@ -10,7 +10,7 @@ import { OfferedCourseServices } from './offeredCourse.services';
 
 const createOfferedCourse: RequestHandler = catchAsync(async (req, res) => {
   const result = await OfferedCourseServices.createOfferedCourse(req.body);
-  sendResponse<OfferedCourse>(res, {
+  sendResponse<OfferedCourse[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Offered Course created successfully.',
