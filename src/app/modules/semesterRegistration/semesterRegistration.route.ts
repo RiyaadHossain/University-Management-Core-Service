@@ -30,4 +30,11 @@ route.delete(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   SemesterRegistrationControllers.deleteSemesterRegistration
 );
+
+route.post(
+  '/start-my-registration',
+  auth(ENUM_USER_ROLE.STUDENT),
+  validateRequest(SemesterRegistrationValidators.startMyRegistrationZodSchema),
+  SemesterRegistrationControllers.startMyRegistration
+);
 export const SemesterRegistrationRoute = route;

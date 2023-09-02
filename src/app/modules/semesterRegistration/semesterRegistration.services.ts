@@ -2,6 +2,7 @@ import {
   SemesterRegistration,
   Prisma,
   SemesterRegistrationStatus,
+  StudentSemesterRegistration,
 } from '@prisma/client';
 import {
   IPageOptions,
@@ -10,7 +11,7 @@ import {
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 import { IFilters } from './semesterRegistration.interface';
-import { semesterRegistrationSearchAbleFields } from './semesterRegistration.constant';
+import { semesterRegistrationRelationalFields, semesterRegistrationRelationalFieldsMapper, semesterRegistrationSearchableFields } from './semesterRegistration.constant';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 
@@ -50,28 +51,39 @@ const getSemesterRegistrations = async (
     paginationHelpers.calculatePagination(options);
 
   const orCondition = [];
-  const { searchTerm, ...filtersData } = filters;
+  const { searchTerm, ...filterData } = filters;
 
   // Searching
   if (searchTerm) {
     orCondition.push({
-      OR: semesterRegistrationSearchAbleFields.map(field => ({
+      OR: semesterRegistrationSearchableFields.map(field => ({
         [field]: { contains: searchTerm, mode: 'insensitive' },
       })),
     });
   }
 
   // Filtering
-  if (Object.keys(filtersData).length) {
+  if (Object.keys(filterData).length) {
     orCondition.push({
-      AND: Object.keys(filtersData).map(field => ({
-        [field]: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          equals: (filtersData as any)[field],
-        },
-      })),
+        AND: Object.keys(filterData).map((key) => {
+            if (semesterRegistrationRelationalFields.includes(key)) {
+                return {
+                    [semesterRegistrationRelationalFieldsMapper[key]]: {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        id: (filterData as any)[key]
+                    }
+                };
+            } else {
+                return {
+                    [key]: {
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        equals: (filterData as any)[key]
+                    }
+                };
+            }
+        })
     });
-  }
+}
 
   const whereCondition: Prisma.SemesterRegistrationWhereInput =
     orCondition.length ? { AND: orCondition } : {};
@@ -118,12 +130,26 @@ const updateSemesterRegistration = async (
     throw new ApiError(httpStatus.BAD_REQUEST, 'No data found!');
   }
 
-  if (data.status && isExist.status === SemesterRegistrationStatus.UPCOMING && data.status !== SemesterRegistrationStatus.ONGOING) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Semester status can only be updated UPCOMING to ONGOING")
+  if (
+    data.status &&
+    isExist.status === SemesterRegistrationStatus.UPCOMING &&
+    data.status !== SemesterRegistrationStatus.ONGOING
+  ) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Semester status can only be updated UPCOMING to ONGOING'
+    );
   }
 
-  if (data.status && isExist.status === SemesterRegistrationStatus.ONGOING && data.status !== SemesterRegistrationStatus.ENDED) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Semester status can only be updated ONGOING to ENDED")
+  if (
+    data.status &&
+    isExist.status === SemesterRegistrationStatus.ONGOING &&
+    data.status !== SemesterRegistrationStatus.ENDED
+  ) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Semester status can only be updated ONGOING to ENDED'
+    );
   }
 
   const result = await prisma.semesterRegistration.update({
@@ -144,10 +170,77 @@ const deleteSemesterRegistration = async (
   return result;
 };
 
+const startMyRegistration = async (
+  studentId: string
+): Promise<{
+  semesterRegistrationInfo: SemesterRegistration | null;
+  studentSemesterReg: StudentSemesterRegistration | null;
+}> => {
+  const studentInfo = await prisma.student.findUnique({
+    where: {
+      id: studentId,
+    },
+  });
+
+  if (!studentInfo) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Student record doesn't exist");
+  }
+
+  const semesterRegistrationInfo = await prisma.semesterRegistration.findFirst({
+    where: {
+      status: {
+        in: [
+          SemesterRegistrationStatus.ONGOING,
+          SemesterRegistrationStatus.UPCOMING,
+        ],
+      },
+    },
+  });
+
+  if (!semesterRegistrationInfo) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Semster Registration record doesn't exist"
+    );
+  }
+
+  if (
+    semesterRegistrationInfo?.status === SemesterRegistrationStatus.UPCOMING
+  ) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Registration is not started yet'
+    );
+  }
+
+  let studentSemesterReg: StudentSemesterRegistration | null =
+    await prisma.studentSemesterRegistration.findFirst({
+      where: {
+        student: {
+          id: studentId,
+        },
+        semesterRegistration: {
+          id: semesterRegistrationInfo.id,
+        },
+      },
+    });
+  
+  const data = {studentId, semesterRegistrationId: semesterRegistrationInfo.id}
+
+  if (!startMyRegistration) {
+    studentSemesterReg = await prisma.studentSemesterRegistration.create({
+      data,
+    });
+  }
+
+  return { semesterRegistrationInfo, studentSemesterReg };
+};
+
 export const SemesterRegistrationServices = {
   createSemesterRegistration,
   getSemesterRegistrations,
   getSemesterRegistration,
   updateSemesterRegistration,
   deleteSemesterRegistration,
+  startMyRegistration,
 };
