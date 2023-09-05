@@ -37,4 +37,12 @@ route.post(
   validateRequest(SemesterRegistrationValidators.startMyRegistrationZodSchema),
   SemesterRegistrationControllers.startMyRegistration
 );
+
+route.post(
+  '/enroll-into-course',
+  auth(ENUM_USER_ROLE.STUDENT),
+  // validateRequest(SemesterRegistrationValidators.startMyRegistrationZodSchema),
+  SemesterRegistrationControllers.enrollIntoCourse
+);
+
 export const SemesterRegistrationRoute = route;

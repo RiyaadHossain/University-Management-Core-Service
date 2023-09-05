@@ -91,13 +91,29 @@ const deleteSemesterRegistration: RequestHandler = catchAsync(
 );
 
 const startMyRegistration: RequestHandler = catchAsync(async (req, res) => {
-  const payload = req.body;
-  const result = SemesterRegistrationServices.startMyRegistration(payload);
+  const studentId = req.user?.id;
+  const result = SemesterRegistrationServices.startMyRegistration(studentId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Semester Registration started successfully.',
+    data: result,
+  });
+});
+
+const enrollIntoCourse: RequestHandler = catchAsync(async (req, res) => {
+  const studentId = req.user?.id;
+  const payload = req.body;
+  const result = SemesterRegistrationServices.enrollIntoCourse(
+    studentId,
+    payload
+  );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student enrolled into course successfully.',
     data: result,
   });
 });
@@ -109,4 +125,5 @@ export const SemesterRegistrationControllers = {
   updateSemesterRegistration,
   deleteSemesterRegistration,
   startMyRegistration,
+  enrollIntoCourse,
 };
