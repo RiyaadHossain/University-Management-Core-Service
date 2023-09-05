@@ -332,6 +332,85 @@ const enrollIntoCourse = async (
   return { message: 'Sutdent enrolled into the course Successfully.' };
 };
 
+const withdrawFromCourse = async (
+  authStudentId: string,
+  payload: IStudentEnrollPayload
+) => {
+  const semesterRegistration = await prisma.semesterRegistration.findFirst({
+    where: { status: SemesterRegistrationStatus.ONGOING },
+  });
+
+  const student = await prisma.student.findFirst({
+    where: { studentId: authStudentId },
+  });
+
+  const offeredCourse = await prisma.offeredCourse.findFirst({
+    where: { id: payload.offeredCourseId },
+    include: { course: true },
+  });
+
+  const offeredCourseSection = await prisma.offeredCourseSection.findFirst({
+    where: { id: payload.offeredCourseSectionId },
+  });
+
+  // Validation
+  if (!semesterRegistration) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'Semester Registration data not found!'
+    );
+  }
+
+  if (!student) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Student data not found!');
+  }
+
+  if (!offeredCourse) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Offered Course data not found!');
+  }
+
+  if (!offeredCourseSection) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'Offered Course Section data not found!'
+    );
+  }
+
+  await prisma.$transaction(async transactionClient => {
+    // 1. Delete StudentSemesterRegistrationCourse Data
+    await transactionClient.studentSemesterRegistrationCourse.delete({
+      where: {
+        semesterRegistrationId_studentId_offeredCourseId: {
+          semesterRegistrationId: semesterRegistration.id,
+          studentId: student.id,
+          offeredCourseId: payload.offeredCourseId,
+        },
+      },
+    });
+
+    // 2. Decrement currentlyEnrolled field in OfferedCourseSection
+    await transactionClient.offeredCourseSection.update({
+      where: { id: offeredCourseSection.id },
+      data: {
+        currentlyEnrolled: {
+          decrement: 1,
+        },
+      },
+    });
+
+    // 3. Decrement totalCreditsTaken field in StudentSemesterRegistration
+    await transactionClient.studentSemesterRegistration.updateMany({
+      where: {
+        studentId: student.id,
+        semesterRegistrationId: semesterRegistration.id,
+      },
+      data: { totalCreditsTaken: { decrement: offeredCourse.course.credits } },
+    });
+  });
+
+  return { message: 'Sutdent enrolled into the course Successfully.' };
+};
+
 export const SemesterRegistrationServices = {
   createSemesterRegistration,
   getSemesterRegistrations,
@@ -340,4 +419,5 @@ export const SemesterRegistrationServices = {
   deleteSemesterRegistration,
   startMyRegistration,
   enrollIntoCourse,
+  withdrawFromCourse,
 };

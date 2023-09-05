@@ -45,4 +45,11 @@ route.post(
   SemesterRegistrationControllers.enrollIntoCourse
 );
 
+route.post(
+  '/withdraw-from-course',
+  auth(ENUM_USER_ROLE.STUDENT),
+  // validateRequest(SemesterRegistrationValidators.startMyRegistrationZodSchema),
+  SemesterRegistrationControllers.withdrawFromCourse
+);
+
 export const SemesterRegistrationRoute = route;
