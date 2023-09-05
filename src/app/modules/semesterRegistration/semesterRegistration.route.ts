@@ -12,7 +12,9 @@ route.get('/:id', SemesterRegistrationControllers.getSemesterRegistration);
 route.post(
   '/',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  validateRequest(SemesterRegistrationValidators.createSemesterRegistrationZodSchema),
+  validateRequest(
+    SemesterRegistrationValidators.createSemesterRegistrationZodSchema
+  ),
   SemesterRegistrationControllers.createSemesterRegistration
 );
 
@@ -41,14 +43,14 @@ route.post(
 route.post(
   '/enroll-into-course',
   auth(ENUM_USER_ROLE.STUDENT),
-  // validateRequest(SemesterRegistrationValidators.startMyRegistrationZodSchema),
+  validateRequest(SemesterRegistrationValidators.enrollAndWithdrawZodSchema),
   SemesterRegistrationControllers.enrollIntoCourse
 );
 
 route.post(
   '/withdraw-from-course',
   auth(ENUM_USER_ROLE.STUDENT),
-  // validateRequest(SemesterRegistrationValidators.startMyRegistrationZodSchema),
+  validateRequest(SemesterRegistrationValidators.enrollAndWithdrawZodSchema),
   SemesterRegistrationControllers.withdrawFromCourse
 );
 

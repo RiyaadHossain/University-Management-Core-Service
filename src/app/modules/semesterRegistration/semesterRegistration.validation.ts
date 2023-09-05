@@ -38,8 +38,20 @@ const startMyRegistrationZodSchema = z.object({
   }),
 });
 
+const enrollAndWithdrawZodSchema = z.object({
+  body: z.object({
+    offeredCourseId: z.string({
+      required_error: 'Offered Course Id is required!',
+    }),
+    offeredCourseSectionId: z.string({
+      required_error: 'Offered Course Section Id is required!',
+    }),
+  }),
+});
+
 export const SemesterRegistrationValidators = {
   createSemesterRegistrationZodSchema,
   updateSemesterRegistrationZodSchema,
   startMyRegistrationZodSchema,
+  enrollAndWithdrawZodSchema,
 };
