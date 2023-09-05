@@ -92,7 +92,7 @@ const deleteSemesterRegistration: RequestHandler = catchAsync(
 
 const startMyRegistration: RequestHandler = catchAsync(async (req, res) => {
   const studentId = req.user?.id;
-  const result = SemesterRegistrationServices.startMyRegistration(studentId);
+  const result = await SemesterRegistrationServices.startMyRegistration(studentId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -105,7 +105,7 @@ const startMyRegistration: RequestHandler = catchAsync(async (req, res) => {
 const enrollIntoCourse: RequestHandler = catchAsync(async (req, res) => {
   const studentId = req.user?.id;
   const payload = req.body;
-  const result = SemesterRegistrationServices.enrollIntoCourse(
+  const result = await SemesterRegistrationServices.enrollIntoCourse(
     studentId,
     payload
   );
@@ -121,7 +121,7 @@ const enrollIntoCourse: RequestHandler = catchAsync(async (req, res) => {
 const withdrawFromCourse: RequestHandler = catchAsync(async (req, res) => {
   const studentId = req.user?.id;
   const payload = req.body;
-  const result = SemesterRegistrationServices.withdrawFromCourse(
+  const result = await SemesterRegistrationServices.withdrawFromCourse(
     studentId,
     payload
   );
@@ -134,6 +134,30 @@ const withdrawFromCourse: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const confirmMyRegistration: RequestHandler = catchAsync(async (req, res) => {
+  const studentId = req.user?.id;
+  const result = await SemesterRegistrationServices.confirmMyRegistration(studentId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Your Registration confirmed successfully.',
+    data: result,
+  });
+});
+
+const getMyRegistration: RequestHandler = catchAsync(async (req, res) => {
+  const studentId = req.user?.id;
+  const result = await SemesterRegistrationServices.getMyRegistration(studentId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Your Registration data fetched successfully.',
+    data: result,
+  });
+});
+
 export const SemesterRegistrationControllers = {
   createSemesterRegistration,
   getSemesterRegistrations,
@@ -142,5 +166,7 @@ export const SemesterRegistrationControllers = {
   deleteSemesterRegistration,
   startMyRegistration,
   enrollIntoCourse,
-  withdrawFromCourse
+  withdrawFromCourse,
+  confirmMyRegistration,
+  getMyRegistration
 };

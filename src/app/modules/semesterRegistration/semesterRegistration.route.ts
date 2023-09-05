@@ -6,6 +6,7 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 const route = express.Router();
 
+route.get('/get-my-registration', SemesterRegistrationControllers.getMyRegistration);
 route.get('/', SemesterRegistrationControllers.getSemesterRegistrations);
 route.get('/:id', SemesterRegistrationControllers.getSemesterRegistration);
 
@@ -52,6 +53,13 @@ route.post(
   auth(ENUM_USER_ROLE.STUDENT),
   validateRequest(SemesterRegistrationValidators.enrollAndWithdrawZodSchema),
   SemesterRegistrationControllers.withdrawFromCourse
+);
+
+route.post(
+  '/confirm-my-registration',
+  auth(ENUM_USER_ROLE.STUDENT),
+  // validateRequest(SemesterRegistrationValidators.enrollAndWithdrawZodSchema),
+  SemesterRegistrationControllers.confirmMyRegistration
 );
 
 export const SemesterRegistrationRoute = route;
