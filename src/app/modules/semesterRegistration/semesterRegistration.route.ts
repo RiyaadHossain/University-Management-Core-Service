@@ -58,8 +58,13 @@ route.post(
 route.post(
   '/confirm-my-registration',
   auth(ENUM_USER_ROLE.STUDENT),
-  // validateRequest(SemesterRegistrationValidators.enrollAndWithdrawZodSchema),
   SemesterRegistrationControllers.confirmMyRegistration
+);
+
+route.post(
+  '/:semesterRegId/start-new-registration',
+  auth(ENUM_USER_ROLE.ADMIN),
+  SemesterRegistrationControllers.startNewRegistration
 );
 
 export const SemesterRegistrationRoute = route;
