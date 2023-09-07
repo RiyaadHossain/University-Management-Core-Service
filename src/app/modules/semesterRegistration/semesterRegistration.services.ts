@@ -3,6 +3,9 @@ import {
   Prisma,
   SemesterRegistrationStatus,
   StudentSemesterRegistration,
+  StudentSemesterRegistrationCourse,
+  OfferedCourse,
+  Course,
 } from '@prisma/client';
 import {
   IPageOptions,
@@ -430,6 +433,9 @@ const startNewRegistration = async (semesterRegId: string) => {
       },
     });
 
+    // In a academic semester, for Every Students and every courses each student taken - create a 'studentEnrolledCourse' column
+
+    // 1. Find all 'Student Semester Registration' data
     const studentSemRegs = await prisma.studentSemesterRegistration.findMany({
       where: {
         semesterRegistration: {
@@ -442,6 +448,7 @@ const startNewRegistration = async (semesterRegId: string) => {
     asyncForEach(
       studentSemRegs,
       async (studentSemReg: StudentSemesterRegistration) => {
+        // 2. Find all 'Student Semester Registration Course' data
         const studentSemesterRegCourses =
           await prisma.studentSemesterRegistrationCourse.findMany({
             where: {
@@ -452,9 +459,42 @@ const startNewRegistration = async (semesterRegId: string) => {
                 id: studentSemReg.id,
               },
             },
+            include: {
+              offeredCourse: {
+                include: { course: true },
+              },
+            },
           });
 
-        // To be continued...
+        asyncForEach(
+          studentSemesterRegCourses,
+          async (
+            item: StudentSemesterRegistrationCourse & {
+              offeredCourse: OfferedCourse & {
+                course: Course;
+              };
+            }
+          ) => {
+            const studentEnrolledCourseData = {
+              studentId: item.studentId,
+              courseId: item.offeredCourse.course.id,
+              academicSemesterId: semesterReg.academicSemesterId,
+            };
+
+            // Validation: Check if 'Student Enrolled Course' data is already exist or not
+            const studentEnrolledCourse =
+              await prisma.studentEnrolledCourse.findFirst({
+                where: studentEnrolledCourseData,
+              });
+
+            // Create 'Student Enrolled Course' data for (Every Students + Every Courses they taken) 
+            if (!studentEnrolledCourse) {
+              await prisma.studentEnrolledCourse.create({
+                data: studentEnrolledCourseData,
+              });
+            }
+          }
+        );
       }
     );
   });
