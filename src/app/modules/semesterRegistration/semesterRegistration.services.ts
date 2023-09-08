@@ -27,6 +27,7 @@ import httpStatus from 'http-status';
 import { studentSemesterRegistrationCourseServices } from '../studentSemesterRegistrationCourse/studentSemesterRegistrationCourse.services';
 import { asyncForEach } from '../../../shared/utils';
 import { studentSemesterPaymentServices } from '../studentSemesterPayment/studentSemesterPayment.services';
+import { studentEnrolledCourseMarkServices } from '../studentEnrolledCourseMark/studentEnrolledCourseMark.services';
 
 const createSemesterRegistration = async (
   semesterRegistrationData: SemesterRegistration
@@ -486,7 +487,6 @@ const startNewRegistration = async (semesterRegId: string) => {
             },
           });
 
-
         asyncForEach(
           studentSemesterRegCourses,
           async (
@@ -510,9 +510,15 @@ const startNewRegistration = async (semesterRegId: string) => {
 
             // 4. Create 'Student Enrolled Course' and  'Student Enrolled Course Mark' data for (Every Students + Every Courses they taken)
             if (!studentEnrolledCourse) {
-              await transactionClient.studentEnrolledCourse.create({
-                data: studentEnrolledCourseData,
-              });
+              const studentEnrolledCourse =
+                await transactionClient.studentEnrolledCourse.create({
+                  data: studentEnrolledCourseData,
+                });
+
+              await studentEnrolledCourseMarkServices.createStudentEnrolledCourseMark(
+                transactionClient,
+                studentEnrolledCourse
+              );
             }
           }
         );
