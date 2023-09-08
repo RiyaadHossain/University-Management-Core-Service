@@ -26,6 +26,7 @@ import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 import { studentSemesterRegistrationCourseServices } from '../studentSemesterRegistrationCourse/studentSemesterRegistrationCourse.services';
 import { asyncForEach } from '../../../shared/utils';
+import { studentSemesterPaymentServices } from '../studentSemesterPayment/studentSemesterPayment.services';
 
 const createSemesterRegistration = async (
   semesterRegistrationData: SemesterRegistration
@@ -433,24 +434,43 @@ const startNewRegistration = async (semesterRegId: string) => {
       },
     });
 
-    // In a academic semester, for Every Students and every courses each student taken - create a 'studentEnrolledCourse' column
+    /*     
+      In a academic semester, 
+       - For Every student semester regestration - create a 'studentSemesterPayment' data
+       - For Every Students and every courses each student taken - create a 'studentEnrolledCourse' & 'studentEnrolledCourseMark' data
+    */
 
     // 1. Find all 'Student Semester Registration' data
-    const studentSemRegs = await prisma.studentSemesterRegistration.findMany({
-      where: {
-        semesterRegistration: {
-          id: semesterRegId,
+    const studentSemRegs =
+      await transactionClient.studentSemesterRegistration.findMany({
+        where: {
+          semesterRegistration: {
+            id: semesterRegId,
+          },
+          isConfirmed: true,
         },
-        isConfirmed: true,
-      },
-    });
+      });
 
     asyncForEach(
       studentSemRegs,
       async (studentSemReg: StudentSemesterRegistration) => {
-        // 2. Find all 'Student Semester Registration Course' data
+        // 2. Create 'studentSemesterPayment' data
+        if (studentSemReg.totalCreditsTaken) {
+          const fullPaymentAmount = studentSemReg.totalCreditsTaken * 5000;
+          const payload = {
+            studentId: studentSemReg.studentId,
+            academicSemesterId: academicSemester.id,
+            fullPaymentAmount,
+          };
+          await studentSemesterPaymentServices.createStudentSemesterPayment(
+            transactionClient,
+            payload
+          );
+        }
+
+        // 3. Find all 'Student Semester Registration Course' data
         const studentSemesterRegCourses =
-          await prisma.studentSemesterRegistrationCourse.findMany({
+          await transactionClient.studentSemesterRegistrationCourse.findMany({
             where: {
               semesterRegistration: {
                 id: semesterRegId,
@@ -465,6 +485,7 @@ const startNewRegistration = async (semesterRegId: string) => {
               },
             },
           });
+
 
         asyncForEach(
           studentSemesterRegCourses,
@@ -483,13 +504,13 @@ const startNewRegistration = async (semesterRegId: string) => {
 
             // Validation: Check if 'Student Enrolled Course' data is already exist or not
             const studentEnrolledCourse =
-              await prisma.studentEnrolledCourse.findFirst({
+              await transactionClient.studentEnrolledCourse.findFirst({
                 where: studentEnrolledCourseData,
               });
 
-            // Create 'Student Enrolled Course' data for (Every Students + Every Courses they taken) 
+            // 4. Create 'Student Enrolled Course' and  'Student Enrolled Course Mark' data for (Every Students + Every Courses they taken)
             if (!studentEnrolledCourse) {
-              await prisma.studentEnrolledCourse.create({
+              await transactionClient.studentEnrolledCourse.create({
                 data: studentEnrolledCourseData,
               });
             }
