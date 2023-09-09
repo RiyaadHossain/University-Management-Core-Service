@@ -3,13 +3,17 @@ import {
   Prisma,
   PrismaClient,
   StudentEnrolledCourse,
+  StudentEnrolledCourseStatus,
 } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 import prisma from '../../../shared/prisma';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 import { studentEnrolledCourseMarkUtils } from './studentEnrolledCourseMark.utils';
-import { IStudentEnrolledCourseMarksPayload } from './studentEnrolledCourseMark.interface';
+import {
+  IUpdateFinalMarksPayload,
+  IUpdateStudentMarksPayload,
+} from './studentEnrolledCourseMark.interface';
 
 const createStudentEnrolledCourseMark = async (
   transactionClient: Omit<
@@ -47,9 +51,7 @@ const createStudentEnrolledCourseMark = async (
   }
 };
 
-const updateStudentMarks = async (
-  payload: IStudentEnrolledCourseMarksPayload
-) => {
+const updateStudentMarks = async (payload: IUpdateStudentMarksPayload) => {
   const { studentId, academicSemesterId, courseId, examType, marks } = payload;
 
   const studentEnrolledCourseMarks =
@@ -82,7 +84,134 @@ const updateStudentMarks = async (
   });
 };
 
+const updateFinalMarks = async (payload: IUpdateFinalMarksPayload) => {
+  /* 
+    Purpose: 
+      1. Update 'StudentEnrolledCourse' - point, grade, totalMarks, status 
+      2. Create 'StudentAcademicInfo'
+  */
+
+  const { academicSemesterId, courseId, studentId } = payload;
+
+  // Find - StudentEnrolledCourse 
+  const studentEnrolledCourse = await prisma.studentEnrolledCourse.findFirst({
+    where: { academicSemesterId, courseId, studentId },
+  });
+
+  if (!studentEnrolledCourse) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'Stduent Enrolled Course data not exist!'
+    );
+  }
+
+  const studentEnrolledCourseMarks =
+    await prisma.studentEnrolledCourseMark.findMany({
+      where: {
+        academicSemesterId,
+        studentId,
+        studentEnrolledCourse: {
+          courseId,
+        },
+      },
+    });
+
+  if (!studentEnrolledCourseMarks.length) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'Stduent Enrolled Course Marks data not exist!'
+    );
+  }
+
+  // Calculate - totalMarks, grade, point
+  const midTermMarks =
+    studentEnrolledCourseMarks.find(mark => mark.examType === ExamType.MIDTERM)
+      ?.marks || 0;
+  const finalMarks =
+    studentEnrolledCourseMarks.find(mark => mark.examType === ExamType.FINAL)
+      ?.marks || 0;
+  const totalMarks = midTermMarks * 0.4 + finalMarks * 0.6;
+
+  const { grade, point } =
+    studentEnrolledCourseMarkUtils.getGradeFromMarks(totalMarks);
+
+  // Transaction - Update StudentEnrolledCourse + Create StudentAcademicInfo
+  const updatedStudentEnrolledCourse = await prisma.$transaction(
+    async transactionClient => {
+        // Update - StudentEnrolledCourse
+      await transactionClient.studentEnrolledCourse.updateMany({
+        where: {
+          studentId,
+          academicSemesterId,
+          courseId,
+        },
+        data: {
+          grade,
+          point,
+          totalMarks,
+          status: StudentEnrolledCourseStatus.COMPLETED,
+        },
+      });
+
+      const updatedStudentEnrolledCourseClient =
+        await transactionClient.studentEnrolledCourse.findMany({
+          where: {
+            studentId,
+            academicSemesterId,
+            courseId,
+          },
+          include: { course: true },
+        });
+
+      // Calculate - totalCompletedCredit, cgpa
+      const { totalCompletedCredit, cgpa } =
+        studentEnrolledCourseMarkUtils.calcCGPAandGrade(
+          updatedStudentEnrolledCourseClient
+        );
+
+      // Create or Update - StudentAcademicInfo
+      const studentAcademicInfo =
+        await transactionClient.studentAcademicInfo.findFirst({
+          where: {
+            student: {
+              id: studentId,
+            },
+          },
+        });
+
+      if (studentAcademicInfo) {
+        await transactionClient.studentAcademicInfo.update({
+          where: {
+            id: studentAcademicInfo.id,
+          },
+          data: {
+            totalCompletedCredit,
+            cgpa,
+          },
+        });
+      } else {
+        await transactionClient.studentAcademicInfo.create({
+          data: {
+            student: {
+              connect: {
+                id: studentId,
+              },
+            },
+            totalCompletedCredit,
+            cgpa,
+          },
+        });
+      }
+
+      return updatedStudentEnrolledCourseClient;
+    }
+  );
+
+  return updatedStudentEnrolledCourse;
+};
+
 export const studentEnrolledCourseMarkServices = {
   createStudentEnrolledCourseMark,
   updateStudentMarks,
+  updateFinalMarks,
 };

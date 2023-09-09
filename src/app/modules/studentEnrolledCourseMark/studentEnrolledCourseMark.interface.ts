@@ -1,9 +1,15 @@
 import { ExamType } from "@prisma/client";
 
-export type IStudentEnrolledCourseMarksPayload = {
+export type IUpdateStudentMarksPayload = {
   studentId: string;
   courseId: string;
   academicSemesterId: string;
   examType: ExamType;
   marks: number;
+};
+
+export type IUpdateFinalMarksPayload = {
+  studentId: string;
+  courseId: string;
+  academicSemesterId: string;
 };
