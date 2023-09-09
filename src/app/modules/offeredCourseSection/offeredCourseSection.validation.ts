@@ -10,6 +10,16 @@ const createOfferedCourseSectionZodSchema = z.object({
     offeredCourseId: z.string({
       required_error: 'Offer Course Id is required',
     }),
+    classSchedules: z.array(
+      z.object({
+        startTime: z.string({ required_error: 'Start time is required' }),
+        endTime: z.string({ required_error: 'End time is required' }),
+        dayOfWeek: z.string({ required_error: 'Week day is required' }),
+        roomId: z.string({ required_error: 'Rood is required' }),
+        facultyId: z.string({ required_error: 'Faculty is required' }),
+      }),
+      { required_error: 'Class Shedules is required' }
+    ),
   }),
 });
 

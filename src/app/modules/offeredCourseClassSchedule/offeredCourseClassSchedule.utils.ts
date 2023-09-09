@@ -4,7 +4,7 @@ import { hasTimeConfilct } from '../../../shared/utils';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 
-export const checkRoomAvailability = async (
+const checkRoomAvailability = async (
   data: OfferedCourseClassSchedule
 ) => {
   const alreadyBookedRoomOnDay =
@@ -37,7 +37,7 @@ export const checkRoomAvailability = async (
   }
 };
 
-export const checkFacultyAvailability = async (
+const checkFacultyAvailability = async (
   data: OfferedCourseClassSchedule
 ) => {
   const alreadyAssignedFacultyOnDay =
@@ -68,4 +68,9 @@ export const checkFacultyAvailability = async (
       `Faculty is not available at ${data.startTime} -  ${data.endTime} time slot!`
     );
   }
+};
+
+export const OfferedCourseClassScheduleUtils = {
+  checkRoomAvailability,
+  checkFacultyAvailability,
 };

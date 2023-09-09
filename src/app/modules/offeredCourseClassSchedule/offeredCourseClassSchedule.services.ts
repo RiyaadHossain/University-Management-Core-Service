@@ -11,16 +11,13 @@ import {
   offeredCourseClassScheduleSearchAbleFields,
   offeredCourseClassScheduleRelationalFields,
 } from './offeredCourseClassSchedule.constant';
-import {
-  checkFacultyAvailability,
-  checkRoomAvailability,
-} from './offeredCourseClassSchedule.utils';
+import { OfferedCourseClassScheduleUtils } from './offeredCourseClassSchedule.utils';
 
 const createOfferedCourseClassSchedule = async (
   offeredCourseClassScheduleData: OfferedCourseClassSchedule
 ): Promise<OfferedCourseClassSchedule> => {
-  await checkRoomAvailability(offeredCourseClassScheduleData);
-  await checkFacultyAvailability(offeredCourseClassScheduleData);
+  await OfferedCourseClassScheduleUtils.checkRoomAvailability(offeredCourseClassScheduleData);
+  await OfferedCourseClassScheduleUtils.checkFacultyAvailability(offeredCourseClassScheduleData);
 
   const result = prisma.offeredCourseClassSchedule.create({
     data: offeredCourseClassScheduleData,

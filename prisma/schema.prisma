@@ -233,7 +233,7 @@ model OfferedCourseSection {
 
   title             String
   maxCapacity       Int
-  currentlyEnrolled Int
+  currentlyEnrolled Int @default(0)
 
   offeredCourseId        String
   semesterRegistrationId String
@@ -263,8 +263,8 @@ model OfferedCourseClassSchedule {
   semesterRegistrationId String
   semesterRegistration   SemesterRegistration @relation(fields: [semesterRegistrationId], references: [id])
 
-  roodId String
-  room   Room   @relation(fields: [roodId], references: [id])
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id])
 
   facultyId String
   faculty   Faculty @relation(fields: [facultyId], references: [id])
