@@ -130,6 +130,7 @@ const updateFinalMarks = async (payload: IUpdateFinalMarksPayload) => {
   const finalMarks =
     studentEnrolledCourseMarks.find(mark => mark.examType === ExamType.FINAL)
       ?.marks || 0;
+  
   const totalMarks = midTermMarks * 0.4 + finalMarks * 0.6;
 
   const { grade, point } =

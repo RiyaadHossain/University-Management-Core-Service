@@ -60,7 +60,7 @@ const moduleRoutes = [
     route: OfferedCourseSectionRoute,
   },
   {
-    path: '/student-enroll-course-mark',
+    path: '/student-enrolled-course-mark',
     route: StudentEnrolledCourseMarkRoute,
   },
 ];
