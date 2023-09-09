@@ -18,7 +18,7 @@ import { asyncForEach } from '../../../shared/utils';
 
 const createOfferedCourseSection = async (
   payload: IOfferedCourseSectionCreate
-): Promise<OfferedCourseSection> => {
+) => {
   const { classSchedules, ...data } = payload;
 
   const offeredCourse = await prisma.offeredCourse.findUnique({

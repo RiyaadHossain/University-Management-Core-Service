@@ -7,6 +7,8 @@ import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 import { studentSearchAbleFields } from './student.constant';
 import { IFilters } from './student.interface';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 const createStudent = async (studentData: Student): Promise<Student> => {
   const result = await prisma.student.create({
@@ -109,10 +111,40 @@ const deleteStudent = async (id: string): Promise<Student | null> => {
   return result;
 };
 
+const getMyCourses = async (
+  authUserId: string,
+  filter: { academicSemesterId?: string; courseId?: string }
+) => {
+  if (!filter.academicSemesterId) {
+    const currentAcademicSemester = await prisma.academicSemester.findFirst({
+      where: { isCurrent: true },
+    });
+
+    if (!currentAcademicSemester) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'No Semester is running!');
+    }
+
+    filter.academicSemesterId = currentAcademicSemester.id;
+  }
+
+  const result = await prisma.studentEnrolledCourse.findMany({
+    where: {
+      studentId: authUserId,
+      ...filter,
+    },
+    include: {
+      course: true,
+    },
+  });
+
+  return result
+};
+
 export const StudentServices = {
   createStudent,
   getStudents,
   getStudent,
   updateStudent,
   deleteStudent,
+  getMyCourses,
 };
