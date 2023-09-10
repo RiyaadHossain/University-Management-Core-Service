@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CourseFaculty, Faculty, Prisma } from '@prisma/client';
 import {
   IPageOptions,
@@ -143,6 +144,104 @@ const removeCourses = async (
   return responseData;
 };
 
+const myCourses = async (
+  authUserId: string,
+  filter: {
+    academicSemesterId?: string | null | undefined;
+    courseId?: string | null | undefined;
+  }
+) => {
+  if (!filter.academicSemesterId) {
+    const currentSemester = await prisma.academicSemester.findFirst({
+      where: {
+        isCurrent: true,
+      },
+    });
+
+    filter.academicSemesterId = currentSemester?.id;
+  }
+
+  const offeredCourseSections = await prisma.offeredCourseSection.findMany({
+    where: {
+      offeredCourseClassSchedules: {
+        some: {
+          faculty: {
+            facultyId: authUserId,
+          },
+        },
+      },
+      offeredCourse: {
+        semesterRegistration: {
+          academicSemesterId: filter.academicSemesterId,
+        },
+      },
+    },
+    include: {
+      offeredCourse: {
+        include: {
+          course: true,
+        },
+      },
+      offeredCourseClassSchedules: {
+        include: {
+          room: {
+            include: {
+              building: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  /* 
+    ## Fortmat Data ##
+      - Find unique course data with its sections (section + schedule)
+      - Sample Data:
+        [
+          course: {
+            ...
+            sections: [
+              section: { ... }, -> offeredCourseSection
+              classSchedues: [ ... ] -> classSchedules[]
+            ]
+          }
+        ]
+  */
+  const courseAndSchedules = offeredCourseSections.reduce(
+    (acc: any, offeredCourseSection: any) => {
+      const course = offeredCourseSection.offeredCourse.course;
+      const classSchedules = offeredCourseSection.offeredCourseClassSchedules;
+
+      const existingCourse = acc.find(
+        (item: any) => item.course?.id === course?.id
+      );
+
+      if (existingCourse) {
+        existingCourse.sections.push({
+          section: offeredCourseSection,
+          classSchedules,
+        });
+      } else {
+        acc.push({
+          course,
+          sections: [
+            {
+              section: offeredCourseSection,
+              classSchedules,
+            },
+          ],
+        });
+      }
+
+      return acc;
+    },
+    []
+  );
+
+  return courseAndSchedules;
+};
+
 export const FacultyServices = {
   createFaculty,
   getFaculties,
@@ -151,4 +250,5 @@ export const FacultyServices = {
   deleteFaculty,
   assignCourses,
   removeCourses,
+  myCourses,
 };

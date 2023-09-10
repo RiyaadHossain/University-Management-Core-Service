@@ -12,7 +12,7 @@ const checkRoomAvailability = async (
       where: {
         dayOfWeek: data.dayOfWeek,
         room: {
-          id: data.roodId,
+          id: data.roomId,
         },
       },
     });

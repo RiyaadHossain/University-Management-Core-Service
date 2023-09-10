@@ -99,6 +99,19 @@ const removeCourses: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const myCourses: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.user?.id;
+  const filter = pick(req.query, ['academicSemesterId', 'courseId']);
+  const result = await FacultyServices.myCourses(id, filter);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'My courses data fetched successfully.',
+    data: result,
+  });
+});
+
 export const FacultyControllers = {
   createFaculty,
   getFaculties,
@@ -106,5 +119,6 @@ export const FacultyControllers = {
   updateFaculty,
   deleteFaculty,
   assignCourses,
-  removeCourses
+  removeCourses,
+  myCourses,
 };
