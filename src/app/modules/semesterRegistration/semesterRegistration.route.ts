@@ -6,8 +6,9 @@ import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
 const route = express.Router();
 
-route.get('/get-my-registration', SemesterRegistrationControllers.getMyRegistration);
 route.get('/', SemesterRegistrationControllers.getSemesterRegistrations);
+route.get('/get-my-registration', SemesterRegistrationControllers.getMyRegistration);
+route.get('/get-my-semsester-courses', SemesterRegistrationControllers.getMySemesterRegCourses);
 route.get('/:id', SemesterRegistrationControllers.getSemesterRegistration);
 
 route.post(

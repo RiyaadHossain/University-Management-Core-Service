@@ -92,7 +92,9 @@ const deleteSemesterRegistration: RequestHandler = catchAsync(
 
 const startMyRegistration: RequestHandler = catchAsync(async (req, res) => {
   const studentId = req.user?.id;
-  const result = await SemesterRegistrationServices.startMyRegistration(studentId);
+  const result = await SemesterRegistrationServices.startMyRegistration(
+    studentId
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -136,7 +138,9 @@ const withdrawFromCourse: RequestHandler = catchAsync(async (req, res) => {
 
 const confirmMyRegistration: RequestHandler = catchAsync(async (req, res) => {
   const studentId = req.user?.id;
-  const result = await SemesterRegistrationServices.confirmMyRegistration(studentId);
+  const result = await SemesterRegistrationServices.confirmMyRegistration(
+    studentId
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -148,7 +152,9 @@ const confirmMyRegistration: RequestHandler = catchAsync(async (req, res) => {
 
 const getMyRegistration: RequestHandler = catchAsync(async (req, res) => {
   const studentId = req.user?.id;
-  const result = await SemesterRegistrationServices.getMyRegistration(studentId);
+  const result = await SemesterRegistrationServices.getMyRegistration(
+    studentId
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -160,12 +166,26 @@ const getMyRegistration: RequestHandler = catchAsync(async (req, res) => {
 
 const startNewRegistration: RequestHandler = catchAsync(async (req, res) => {
   const semesterRegId = req.params.semesterRegId;
-  const result = await SemesterRegistrationServices.startNewRegistration(semesterRegId);
+  const result = await SemesterRegistrationServices.startNewRegistration(
+    semesterRegId
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'New Registration started successfully.',
+    data: result,
+  });
+});
+
+const getMySemesterRegCourses: RequestHandler = catchAsync(async (req, res) => {
+  const studentId = req.user?.id;
+  const result = await SemesterRegistrationServices.getMySemesterRegCourses(studentId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Semester Registration courses fetched successfully.',
     data: result,
   });
 });
@@ -181,5 +201,6 @@ export const SemesterRegistrationControllers = {
   withdrawFromCourse,
   confirmMyRegistration,
   getMyRegistration,
-  startNewRegistration
+  startNewRegistration,
+  getMySemesterRegCourses,
 };
