@@ -1,4 +1,8 @@
-import { Prisma, Student } from '@prisma/client';
+import {
+  Prisma,
+  Student,
+  StudentEnrolledCourseStatus,
+} from '@prisma/client';
 import {
   IPageOptions,
   paginationHelpers,
@@ -6,9 +10,10 @@ import {
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 import { studentSearchAbleFields } from './student.constant';
-import { IFilters } from './student.interface';
+import { EnrolledWithCourseNAcademicSem, IFilters } from './student.interface';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
+import { StudentUtils } from './student.utils';
 
 const createStudent = async (studentData: Student): Promise<Student> => {
   const result = await prisma.student.create({
@@ -137,7 +142,7 @@ const getMyCourses = async (
     },
   });
 
-  return result
+  return result;
 };
 
 const getMyCoursesSchedules = async (
@@ -145,60 +150,89 @@ const getMyCoursesSchedules = async (
   filter: { academicSemesterId?: string; courseId?: string }
 ) => {
   if (!filter.academicSemesterId) {
-      const currentSemester = await prisma.academicSemester.findFirst({
-          where: {
-              isCurrent: true
-          }
-      });
-      filter.academicSemesterId = currentSemester?.id;
+    const currentSemester = await prisma.academicSemester.findFirst({
+      where: {
+        isCurrent: true,
+      },
+    });
+    filter.academicSemesterId = currentSemester?.id;
   }
 
   const studentEnrolledCourses = await getMyCourses(authUserId, filter);
-  const studentEnrolledCourseIds = studentEnrolledCourses.map((item) => item.courseId);
+  const studentEnrolledCourseIds = studentEnrolledCourses.map(
+    item => item.courseId
+  );
   const result = await prisma.studentSemesterRegistrationCourse.findMany({
-      where: {
-          student: {
-              studentId: authUserId
-          },
-          semesterRegistration: {
-              academicSemester: {
-                  id: filter.academicSemesterId
-              }
-          },
-          offeredCourse: {
-              course: {
-                  id: {
-                      in: studentEnrolledCourseIds
-                  }
-              }
-          }
+    where: {
+      student: {
+        studentId: authUserId,
       },
-      include: {
-          offeredCourse: {
-              include: {
-                  course: true
-              }
+      semesterRegistration: {
+        academicSemester: {
+          id: filter.academicSemesterId,
+        },
+      },
+      offeredCourse: {
+        course: {
+          id: {
+            in: studentEnrolledCourseIds,
           },
-          offeredCourseSection: {
-              include: {
-                  offeredCourseClassSchedules: {
-                      include: {
-                          room: {
-                              include: {
-                                  building: true
-                              }
-                          },
-                          faculty: true
-                      }
-
-                  }
-              }
-          }
-      }
+        },
+      },
+    },
+    include: {
+      offeredCourse: {
+        include: {
+          course: true,
+        },
+      },
+      offeredCourseSection: {
+        include: {
+          offeredCourseClassSchedules: {
+            include: {
+              room: {
+                include: {
+                  building: true,
+                },
+              },
+              faculty: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return result;
- }
+};
+
+const getMyAcademicInfo = async (authUserId: string) => {
+  const acadmicInfo = await prisma.studentAcademicInfo.findFirst({
+    where: {
+      studentId: authUserId,
+    },
+  });
+
+  const enrolledCourses: EnrolledWithCourseNAcademicSem[] =
+    await prisma.studentEnrolledCourse.findMany({
+      where: {
+        studentId: authUserId,
+        status: StudentEnrolledCourseStatus.COMPLETED,
+      },
+      include: {
+        course: true,
+        academicSemester: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
+  // Group Academic Info
+  const groupAcademicInfo = StudentUtils.groupAcademicInfo(enrolledCourses);
+
+  return { acadmicInfo, courses: groupAcademicInfo };
+};
 
 export const StudentServices = {
   createStudent,
@@ -207,5 +241,6 @@ export const StudentServices = {
   updateStudent,
   deleteStudent,
   getMyCourses,
-  getMyCoursesSchedules
+  getMyCoursesSchedules,
+  getMyAcademicInfo,
 };

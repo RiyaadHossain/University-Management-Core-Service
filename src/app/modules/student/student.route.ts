@@ -20,6 +20,12 @@ route.get(
   StudentControllers.getMyCourses
 );
 
+route.get(
+  '/get-my-acadmic-info',
+  auth(ENUM_USER_ROLE.STUDENT),
+  StudentControllers.getMyAcademicInfo
+);
+
 route.get('/:id', StudentControllers.getStudent);
 
 route.post(

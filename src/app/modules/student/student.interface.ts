@@ -1,3 +1,9 @@
+import {
+  AcademicSemester,
+  Course,
+  StudentEnrolledCourse,
+} from '@prisma/client';
+
 export type IFilters = {
   searchTerm?: string;
   title?: string;
@@ -5,3 +11,9 @@ export type IFilters = {
   startMonth?: string;
   endMonth?: string;
 };
+
+export type EnrolledWithCourseNAcademicSem =
+  | (StudentEnrolledCourse & {
+      course: Course;
+      academicSemester: AcademicSemester;
+    });
