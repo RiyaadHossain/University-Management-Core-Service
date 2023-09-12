@@ -532,10 +532,10 @@ const startNewRegistration = async (semesterRegId: string) => {
 const getMySemesterRegCourses = async (authUserId: string) => {
   /*  
     Purpose: Fetch the courses in which the student can enroll.
-    Technique: From OfferedCourses data, remove the below data -
-          1. Completed Courses, 
-          2. Ongoing Courses,
-          3. Prerequisite Not Fulfiled
+    Technique: From OfferedCourses data -
+          1. Completed Courses (Remove) 
+          2. Prerequisite Not Fulfiled (Remove)
+          3. Ongoing Courses, (Set Flag)
   */
 
   const student = await prisma.student.findFirst({
@@ -561,7 +561,7 @@ const getMySemesterRegCourses = async (authUserId: string) => {
   if (!semesterRegistration) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      'No semester registration not found!'
+      'No semester registration found!'
     );
   }
 

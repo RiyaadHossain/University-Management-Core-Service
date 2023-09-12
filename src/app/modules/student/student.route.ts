@@ -9,6 +9,12 @@ const route = express.Router();
 route.get('/', StudentControllers.getStudents);
 
 route.get(
+  '/get-my-courses-schedules',
+  auth(ENUM_USER_ROLE.STUDENT),
+  StudentControllers.getMyCoursesSchedules
+);
+
+route.get(
   '/get-my-courses',
   auth(ENUM_USER_ROLE.STUDENT),
   StudentControllers.getMyCourses

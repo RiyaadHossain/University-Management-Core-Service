@@ -14,7 +14,7 @@ const getAvailableCourses = (
       (offeredCourse: any) =>
         !completedCoursesId.includes(offeredCourse.courseId)
     )
-    // 2. Remove - Not fulfil prerequisite courses
+    // 2. Remove - Not fulfil preRequisite courses
     .filter((offeredCourse: any) => {
       const preRequisites = offeredCourse.course.preRequisite;
       if (preRequisites.length) {
