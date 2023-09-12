@@ -162,6 +162,7 @@ const getMyCoursesSchedules = async (
   const studentEnrolledCourseIds = studentEnrolledCourses.map(
     item => item.courseId
   );
+  
   const result = await prisma.studentSemesterRegistrationCourse.findMany({
     where: {
       student: {

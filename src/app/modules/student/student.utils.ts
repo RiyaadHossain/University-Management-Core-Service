@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EnrolledWithCourseNAcademicSem } from './student.interface';
 
-/*
-  Purpose: Group Academic Info by unique Adademic Semester and its completed courses
-  Format: 
-  [
-    {
-      ...academicSemester,
-      completedCourses: [
-        {
-          ...enrolledCourse
-        }
-      ]
-    }  
-  ]
-*/
-
 const groupAcademicInfo = (
   enrolledCourses: EnrolledWithCourseNAcademicSem[]
 ) => {
+  /*
+    Purpose: Group Academic Info by unique Adademic Semester and its completed courses
+    Format: 
+    [
+      {
+        ...academicSemester,
+        completedCourses: [
+          {
+            ...enrolledCourse
+          }
+        ]
+      }  
+    ]
+  */
+
   const groupData = enrolledCourses.reduce(
     (result: any, enrolledCourse: EnrolledWithCourseNAcademicSem) => {
       const academicSemester = enrolledCourse.academicSemester;
