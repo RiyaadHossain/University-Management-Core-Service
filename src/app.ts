@@ -15,8 +15,13 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Application Routes
 app.use('/api/v1', routes);
 
+// Health Check
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello World from University Management!');
+});
 
 //global error handler
 app.use(globalErrorHandler);

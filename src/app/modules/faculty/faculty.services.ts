@@ -7,7 +7,9 @@ import {
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 import { facultySearchAbleFields } from './faculty.constant';
-import { IFilters } from './faculty.interface';
+import { IFilters, IMyCourseStudentsPayload } from './faculty.interface';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 const createFaculty = async (facultyData: Faculty): Promise<Faculty> => {
   const result = await prisma.faculty.create({
@@ -242,6 +244,41 @@ const myCourses = async (
   return courseAndSchedules;
 };
 
+const myCourseStudents = async (authUserId: string, payload: IMyCourseStudentsPayload) => {
+  console.log(authUserId, payload)
+
+  const course = await prisma.course.findUnique({
+    where: { id: payload.courseId },
+  });
+
+  if (!course) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Course data not found!');
+  }
+
+  const academicSemester = await prisma.academicSemester.findUnique({
+    where: { id: payload.academicSemesterId },
+  });
+
+  if (!academicSemester) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'Academic Semester data not found!'
+    );
+  }
+
+  const offeredCourseSection = await prisma.offeredCourseSection.findUnique({
+    where: { id: payload.offeredCourseSectionId },
+  });
+
+  if (!offeredCourseSection) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'Academic Semester data not found!'
+    );
+  }
+
+}
+
 export const FacultyServices = {
   createFaculty,
   getFaculties,
@@ -251,4 +288,5 @@ export const FacultyServices = {
   assignCourses,
   removeCourses,
   myCourses,
+  myCourseStudents
 };

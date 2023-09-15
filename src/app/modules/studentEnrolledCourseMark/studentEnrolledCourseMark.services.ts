@@ -13,6 +13,7 @@ import { studentEnrolledCourseMarkUtils } from './studentEnrolledCourseMark.util
 import {
   IUpdateFinalMarksPayload,
   IUpdateStudentMarksPayload,
+  MyMarksQueryData,
 } from './studentEnrolledCourseMark.interface';
 
 const createStudentEnrolledCourseMark = async (
@@ -93,7 +94,7 @@ const updateFinalMarks = async (payload: IUpdateFinalMarksPayload) => {
 
   const { academicSemesterId, courseId, studentId } = payload;
 
-  // Find - StudentEnrolledCourse 
+  // Find - StudentEnrolledCourse
   const studentEnrolledCourse = await prisma.studentEnrolledCourse.findFirst({
     where: { academicSemesterId, courseId, studentId },
   });
@@ -130,7 +131,7 @@ const updateFinalMarks = async (payload: IUpdateFinalMarksPayload) => {
   const finalMarks =
     studentEnrolledCourseMarks.find(mark => mark.examType === ExamType.FINAL)
       ?.marks || 0;
-  
+
   const totalMarks = midTermMarks * 0.4 + finalMarks * 0.6;
 
   const { grade, point } =
@@ -139,7 +140,7 @@ const updateFinalMarks = async (payload: IUpdateFinalMarksPayload) => {
   // Transaction - Update StudentEnrolledCourse + Create StudentAcademicInfo
   const updatedStudentEnrolledCourse = await prisma.$transaction(
     async transactionClient => {
-        // Update - StudentEnrolledCourse
+      // Update - StudentEnrolledCourse
       await transactionClient.studentEnrolledCourse.updateMany({
         where: {
           studentId,
@@ -211,8 +212,51 @@ const updateFinalMarks = async (payload: IUpdateFinalMarksPayload) => {
   return updatedStudentEnrolledCourse;
 };
 
+const myMarks = async (authUserId: string, payload: MyMarksQueryData) => {
+  const student = await prisma.student.findFirst({
+    where: { studentId: authUserId },
+  });
+
+  if (!student) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Student data not found!');
+  }
+
+  const course = await prisma.course.findUnique({
+    where: { id: payload.courseId },
+  });
+
+  if (!course) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Course data not found!');
+  }
+
+  const academicSemester = await prisma.academicSemester.findUnique({
+    where: { id: payload.academicSemesterId },
+  });
+
+  if (!academicSemester) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      'Academic Semester data not found!'
+    );
+  }
+
+  const studentMarks = await prisma.studentEnrolledCourseMark.findMany({
+    where: {
+      studentId: student.id,
+      academicSemesterId: academicSemester.id,
+      studentEnrolledCourse: {
+        courseId: course.id,
+      },
+    },
+  });
+
+  console.log(studentMarks);
+  return studentMarks;
+};
+
 export const studentEnrolledCourseMarkServices = {
   createStudentEnrolledCourseMark,
   updateStudentMarks,
   updateFinalMarks,
+  myMarks,
 };

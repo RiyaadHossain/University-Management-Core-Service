@@ -5,3 +5,9 @@ export type IFilters = {
   startMonth?: string;
   endMonth?: string;
 };
+
+export type IMyCourseStudentsPayload = {
+  academicSemesterId?: string;
+  courseId?: string;
+  offeredCourseSectionId?: string;
+};

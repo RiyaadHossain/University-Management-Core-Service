@@ -14,10 +14,17 @@ route.get(
   FacultyControllers.myCourses
 );
 
+route.get(
+  '/my-course-students',
+  auth(ENUM_USER_ROLE.FACULTY),
+  FacultyControllers.myCourseStudents
+);
+
 route.get('/:id', FacultyControllers.getFaculty);
 
 route.post(
   '/',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   validateRequest(FacultyValidators.createFacultyZodSchema),
   FacultyControllers.createFaculty
 );

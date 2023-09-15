@@ -527,6 +527,8 @@ const startNewRegistration = async (semesterRegId: string) => {
       }
     );
   });
+
+  return semesterReg
 };
 
 const getMySemesterRegCourses = async (authUserId: string) => {
