@@ -6,12 +6,14 @@ import {
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 import {
+  academicSemesterCreate,
   academicSemesterTitleCodeMap,
   academicSemestersSearchAbleFields,
 } from './academicSemester.constant';
 import { IFilters } from './academicSemester.interface';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
+import { RedisClient } from '../../../shared/redis';
 
 const createAcademicSemester = async (
   academicSemesterData: AcademicSemester
@@ -26,6 +28,13 @@ const createAcademicSemester = async (
   const result = await prisma.academicSemester.create({
     data: academicSemesterData,
   });
+
+  if (result) {
+    RedisClient.redisPubClient.publish(
+      academicSemesterCreate,
+      JSON.stringify(result)
+    );
+  }
 
   return result;
 };

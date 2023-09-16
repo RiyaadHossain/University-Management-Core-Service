@@ -61,6 +61,7 @@ const disconnect = async () => {
 };
 
 export const RedisClient = {
+  redisClient,
   redisPubClient,
   redisSubClient,
   set,
