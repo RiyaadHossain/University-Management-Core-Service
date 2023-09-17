@@ -72,4 +72,6 @@ export const RedisClient = {
   delAccessToken,
   connect,
   disconnect,
+  publish: redisPubClient.publish.bind(redisPubClient),
+  subscribe: redisPubClient.subscribe.bind(redisSubClient),
 };

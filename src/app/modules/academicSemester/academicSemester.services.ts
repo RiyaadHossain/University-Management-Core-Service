@@ -6,7 +6,9 @@ import {
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 import {
-  academicSemesterCreate,
+  EVENT_ACADEMIC_SEMESTER_CREATE,
+  EVENT_ACADEMIC_SEMESTER_DELETE,
+  EVENT_ACADEMIC_SEMESTER_UPDATE,
   academicSemesterTitleCodeMap,
   academicSemestersSearchAbleFields,
 } from './academicSemester.constant';
@@ -25,15 +27,27 @@ const createAcademicSemester = async (
   ) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Semester code!');
   }
+
+  const isExist = await prisma.academicSemester.findFirst({
+    where: {
+      year: academicSemesterData.year,
+      title: academicSemesterData.title,
+    },
+  });
+
+  if (isExist) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'Academic Semester is already exist!'
+    );
+  }
+
   const result = await prisma.academicSemester.create({
     data: academicSemesterData,
   });
 
   if (result) {
-    RedisClient.redisPubClient.publish(
-      academicSemesterCreate,
-      JSON.stringify(result)
-    );
+    RedisClient.publish(EVENT_ACADEMIC_SEMESTER_CREATE, JSON.stringify(result));
   }
 
   return result;
@@ -112,6 +126,10 @@ const updateAcademicSemester = async (
     data,
   });
 
+  if (result) {
+    RedisClient.publish(EVENT_ACADEMIC_SEMESTER_UPDATE, JSON.stringify(result));
+  }
+
   return result;
 };
 
@@ -121,6 +139,10 @@ const deleteAcademicSemester = async (
   const result = await prisma.academicSemester.delete({
     where: { id },
   });
+
+  if (result) {
+    RedisClient.publish(EVENT_ACADEMIC_SEMESTER_DELETE, JSON.stringify(result));
+  }
 
   return result;
 };
