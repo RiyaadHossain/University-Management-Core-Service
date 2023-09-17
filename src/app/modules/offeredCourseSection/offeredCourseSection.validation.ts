@@ -29,6 +29,7 @@ const updateOfferedCourseSectionZodSchema = z.object({
     maxCapacity: z.number().optional(),
     currentlyEnrolled: z.number().optional(),
     offeredCourseId: z.string().optional(),
+    classSchedules: z.string().optional(),
   }),
 });
 

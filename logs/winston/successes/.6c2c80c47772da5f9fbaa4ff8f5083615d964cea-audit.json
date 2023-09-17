@@ -84,6 +84,16 @@
             "date": 1694916739064,
             "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\successes\\phu-2023-17-09-08-success.log",
             "hash": "3f91dda8139c1366751475c2765fc640cecceafbaae7ff8908bba4227a5d6af8"
+        },
+        {
+            "date": 1694922814340,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\successes\\phu-2023-17-09-09-success.log",
+            "hash": "3852e1cc2b6871ebca69f6fae6c21c6a2d35576f735dea668ca94fa36026ac12"
+        },
+        {
+            "date": 1694927238765,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\successes\\phu-2023-17-09-11-success.log",
+            "hash": "10275480cdf300dfd05498100d2b16e35af74bf2b5909f3345f7d43a6dd5cc12"
         }
     ],
     "hashType": "sha256"

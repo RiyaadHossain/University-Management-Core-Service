@@ -84,6 +84,16 @@
             "date": 1694916739076,
             "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-17-09-08-error.log",
             "hash": "692bd838679a26770e4a02579b952042b5fb368b2d766ced83794036cb1ed135"
+        },
+        {
+            "date": 1694922814352,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-17-09-09-error.log",
+            "hash": "28315ffcd5b28dad38891f0b5da955f2e0ede5fcf4152e206360585742b54635"
+        },
+        {
+            "date": 1694927238779,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-17-09-11-error.log",
+            "hash": "cbd87716cd93fd9cd26242ca4227fccf408a6d72476a522c394295b45fee3b93"
         }
     ],
     "hashType": "sha256"
