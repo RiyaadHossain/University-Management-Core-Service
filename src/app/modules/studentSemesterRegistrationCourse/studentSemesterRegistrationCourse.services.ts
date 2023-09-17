@@ -16,7 +16,7 @@ const enrollIntoCourse = async (
     where: { studentId: authStudentId },
   });
 
-  const offeredCourse = await prisma.offeredCourse.findFirst({
+  const offeredCourse: any = await prisma.offeredCourse.findFirst({
     where: { id: payload.offeredCourseId },
     include: { course: true },
   });
@@ -102,7 +102,7 @@ const withdrawFromCourse = async (
     where: { studentId: authStudentId },
   });
 
-  const offeredCourse = await prisma.offeredCourse.findFirst({
+  const offeredCourse: any = await prisma.offeredCourse.findFirst({
     where: { id: payload.offeredCourseId },
     include: { course: true },
   });
