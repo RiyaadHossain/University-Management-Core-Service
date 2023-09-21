@@ -5,7 +5,6 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 const { combine, timestamp, label, printf } = format;
 
 //Customm Log Format
-
 const myFormat = printf(({ level, message, timestamp }) => {
   const date = new Date(timestamp);
   const hour = date.getHours();

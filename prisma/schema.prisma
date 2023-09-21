@@ -66,7 +66,7 @@ model Student {
   firstName    String
   middleName   String
   lastName     String
-  profileImage String
+  profileImage String?
   email        String
   contactNo    String
   gender       String
@@ -74,8 +74,8 @@ model Student {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  academicSemeter   AcademicSemester @relation(fields: [academicSemeterId], references: [id])
-  academicSemeterId String
+  academicSemeter   AcademicSemester @relation(fields: [academicSemesterId], references: [id])
+  academicSemesterId String
 
   academicDepartment   AcademicDepartment @relation(fields: [academicDepartmentId], references: [id])
   academicDepartmentId String
@@ -98,7 +98,7 @@ model Faculty {
   firstName    String
   middleName   String
   lastName     String
-  profileImage String
+  profileImage String?
   email        String
   contactNo    String
   gender       String

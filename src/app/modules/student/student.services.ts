@@ -1,8 +1,4 @@
-import {
-  Prisma,
-  Student,
-  StudentEnrolledCourseStatus,
-} from '@prisma/client';
+import { Prisma, Student, StudentEnrolledCourseStatus } from '@prisma/client';
 import {
   IPageOptions,
   paginationHelpers,
@@ -162,7 +158,7 @@ const getMyCoursesSchedules = async (
   const studentEnrolledCourseIds = studentEnrolledCourses.map(
     item => item.courseId
   );
-  
+
   const result = await prisma.studentSemesterRegistrationCourse.findMany({
     where: {
       student: {
@@ -235,6 +231,26 @@ const getMyAcademicInfo = async (authUserId: string) => {
   return { acadmicInfo, courses: groupAcademicInfo };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createStudentEvent = async (catched: any) => {
+
+  const studentData: Partial<Student> = {
+    studentId: catched.id,
+    firstName: catched.name.firstName,
+    lastName: catched.name.lastName,
+    middleName: catched.name.middleName,
+    email: catched.email,
+    contactNo: catched.contactNo,
+    gender: catched.gender,
+    bloodgroup: catched.bloodGroup,
+    academicSemesterId: catched.academicSemester.syncId,
+    academicDepartmentId: catched.academicDepartment.syncId,
+    academicFacultyId: catched.academicFaculty.syncId,
+  };
+
+  await createStudent(studentData as Student);
+};
+
 export const StudentServices = {
   createStudent,
   getStudents,
@@ -244,4 +260,5 @@ export const StudentServices = {
   getMyCourses,
   getMyCoursesSchedules,
   getMyAcademicInfo,
+  createStudentEvent,
 };

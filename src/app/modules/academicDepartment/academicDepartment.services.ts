@@ -5,8 +5,14 @@ import {
 } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
-import { academicDepartmentsSearchAbleFields } from './academicDepartment.constant';
+import {
+  EVENT_ACADEMIC_DEPARTMENT_CREATE,
+  EVENT_ACADEMIC_DEPARTMENT_DELETE,
+  EVENT_ACADEMIC_DEPARTMENT_UPDATE,
+  academicDepartmentsSearchAbleFields,
+} from './academicDepartment.constant';
 import { IFilters } from './academicDepartment.interface';
+import { RedisClient } from '../../../shared/redis';
 
 const createAcademicDepartment = async (
   academicDepartmentData: AcademicDepartment
@@ -14,6 +20,13 @@ const createAcademicDepartment = async (
   const result = await prisma.academicDepartment.create({
     data: academicDepartmentData,
   });
+
+  if (result) {
+    RedisClient.publish(
+      EVENT_ACADEMIC_DEPARTMENT_CREATE,
+      JSON.stringify(result)
+    );
+  }
 
   return result;
 };
@@ -91,6 +104,13 @@ const updateAcademicDepartment = async (
     data,
   });
 
+  if (result) {
+    RedisClient.publish(
+      EVENT_ACADEMIC_DEPARTMENT_UPDATE,
+      JSON.stringify(result)
+    );
+  }
+
   return result;
 };
 
@@ -100,6 +120,13 @@ const deleteAcademicDepartment = async (
   const result = await prisma.academicDepartment.delete({
     where: { id },
   });
+
+  if (result) {
+    RedisClient.publish(
+      EVENT_ACADEMIC_DEPARTMENT_DELETE,
+      JSON.stringify(result)
+    );
+  }
 
   return result;
 };

@@ -1,0 +1,73 @@
+✅ [ERROR]: 
+Invalid `prisma.student.create()` invocation in
+E:\Programming Hero\Web Dev 2.0\0.1 Backend Project\Practice- University Management\Core_Service\src\app\modules\student\student.services.ts:15:39
+
+  12 import { StudentUtils } from './student.utils';
+  13 
+  14 const createStudent = async (studentData: Student): Promise<Student> => {
+→ 15   const result = await prisma.student.create({
+         data: {
+           studentId: "240100001",
+           firstName: "Haq",
+           lastName: "Hossain",
+           middleName: "-",
+           email: "user@gmail.com",
+           contactNo: undefined,
+           gender: "male",
+           bloodgroup: "O+",
+           academicSemesterId: "6f69734b-d0d0-437e-b99e-0d02285fc119",
+           academicDepartmentId: "6c4f8af3-2705-4cfa-951b-fd05dde71948",
+           academicFacultyId: "388cc311-b79d-4bcd-b9a2-362fbe31de8a",
+       +   profileImage: String
+         }
+       })
+
+Argument `profileImage` is missing. ~ 🕑 [Time]: Thu Sep 21 2023 9:5:30
+✅ [ERROR]: 
+Invalid `prisma.student.create()` invocation in
+E:\Programming Hero\Web Dev 2.0\0.1 Backend Project\Practice- University Management\Core_Service\src\app\modules\student\student.services.ts:15:39
+
+  12 import { StudentUtils } from './student.utils';
+  13 
+  14 const createStudent = async (studentData: Student): Promise<Student> => {
+→ 15   const result = await prisma.student.create({
+         data: {
+           studentId: "240100002",
+           firstName: "Haq",
+           lastName: "Hossain",
+           middleName: "-",
+           email: "user@gmail.com",
+           gender: "male",
+           bloodgroup: "O+",
+           academicSemesterId: "6f69734b-d0d0-437e-b99e-0d02285fc119",
+           academicDepartmentId: "6c4f8af3-2705-4cfa-951b-fd05dde71948",
+           academicFacultyId: "388cc311-b79d-4bcd-b9a2-362fbe31de8a",
+       +   contactNo: String
+         }
+       })
+
+Argument `contactNo` is missing. ~ 🕑 [Time]: Thu Sep 21 2023 9:8:50
+✅ [ERROR]: 
+Invalid `prisma.student.create()` invocation in
+E:\Programming Hero\Web Dev 2.0\0.1 Backend Project\Practice- University Management\Core_Service\src\app\modules\student\student.services.ts:15:39
+
+  12 import { StudentUtils } from './student.utils';
+  13 
+  14 const createStudent = async (studentData: Student): Promise<Student> => {
+→ 15   const result = await prisma.student.create({
+         data: {
+           studentId: "240100001",
+           firstName: "Haq",
+           lastName: "Hossain",
+           middleName: "-",
+           email: "user@gmail.com",
+           gender: "male",
+           bloodgroup: "O+",
+           academicSemesterId: "6f69734b-d0d0-437e-b99e-0d02285fc119",
+           academicDepartmentId: "6c4f8af3-2705-4cfa-951b-fd05dde71948",
+           academicFacultyId: "388cc311-b79d-4bcd-b9a2-362fbe31de8a",
+       +   contactNo: String
+         }
+       })
+
+Argument `contactNo` is missing. ~ 🕑 [Time]: Thu Sep 21 2023 9:10:35

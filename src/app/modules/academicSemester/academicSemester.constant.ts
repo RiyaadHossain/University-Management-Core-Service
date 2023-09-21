@@ -3,7 +3,7 @@ export const academicSemesterFilters = [
   'title',
   'code',
   'startMonth',
-  'endMonth',
+  'endMonth'
 ];
 
 export const academicSemestersSearchAbleFields = [
@@ -26,6 +26,6 @@ export const academicSemesterTitleCodeMap: { [key: string]: string } = {
   Fall: '03',
 };
 
-export const EVENT_ACADEMIC_SEMESTER_CREATE = 'academic-semester.create'
-export const EVENT_ACADEMIC_SEMESTER_UPDATE = 'academic-semester.update'
-export const EVENT_ACADEMIC_SEMESTER_DELETE = 'academic-semester.delete'
+export const EVENT_ACADEMIC_SEMESTER_CREATE = 'academic-semester.create';
+export const EVENT_ACADEMIC_SEMESTER_UPDATE = 'academic-semester.update';
+export const EVENT_ACADEMIC_SEMESTER_DELETE = 'academic-semester.delete';
