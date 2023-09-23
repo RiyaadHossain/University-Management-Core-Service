@@ -1,0 +1,11 @@
+✅ [ERROR]: 
+Invalid `prisma.faculty.delete()` invocation in
+E:\Programming Hero\Web Dev 2.0\0.1 Backend Project\Practice- University Management\Core_Service\src\app\modules\faculty\faculty.services.ts:342:30
+
+  339 
+  340 const deleteFacultyEvent = async (catched: any) => {
+  341   console.log(catched)
+→ 342   await prisma.faculty.delete(
+An operation failed because it depends on one or more records that were required but not found. Record to delete does not exist. ~ 🕑 [Time]: Sat Sep 23 2023 10:1:45
+✅ [ERROR]: Cannot read properties of undefined (reading 'id') ~ 🕑 [Time]: Sat Sep 23 2023 10:58:36
+✅ [ERROR]: Cannot read properties of undefined (reading 'id') ~ 🕑 [Time]: Sat Sep 23 2023 10:59:42

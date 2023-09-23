@@ -233,7 +233,6 @@ const getMyAcademicInfo = async (authUserId: string) => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createStudentEvent = async (catched: any) => {
-
   const studentData: Partial<Student> = {
     studentId: catched.id,
     firstName: catched.name.firstName,
@@ -251,6 +250,50 @@ const createStudentEvent = async (catched: any) => {
   await createStudent(studentData as Student);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updateStudentEvent = async (catched: any) => {
+
+  const isExist = await prisma.student.findFirst({
+    where: {
+      studentId: catched.id,
+    },
+  });
+
+  if (!isExist) {
+    createStudentEvent(catched);
+  } else {
+    const studentData: Partial<Student> = {
+      studentId: catched.id,
+      firstName: catched.firstName,
+      lastName: catched.lastName,
+      middleName: catched.middleName,
+      profileImage: catched.profileImage,
+      email: catched.email,
+      contactNo: catched.contactNo,
+      gender: catched.gender,
+      bloodgroup: catched.bloodGroup,
+      academicDepartmentId: catched.academicDepartment.syncId,
+      academicFacultyId: catched.academicFaculty.syncId,
+    };
+
+    await prisma.student.updateMany({
+      where: {
+        studentId: catched.id,
+      },
+      data: studentData,
+    });
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const deleteStudentEvent = async (catched: any) => {
+  await prisma.student.deleteMany({
+    where: {
+      studentId: catched.id,
+    },
+  });
+};
+
 export const StudentServices = {
   createStudent,
   getStudents,
@@ -261,4 +304,6 @@ export const StudentServices = {
   getMyCoursesSchedules,
   getMyAcademicInfo,
   createStudentEvent,
+  updateStudentEvent,
+  deleteStudentEvent,
 };

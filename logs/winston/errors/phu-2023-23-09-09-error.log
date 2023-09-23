@@ -1,0 +1,39 @@
+✅ [ERROR]: Cannot read properties of undefined (reading 'firstName') ~ 🕑 [Time]: Sat Sep 23 2023 9:44:56
+✅ [ERROR]: Cannot read properties of undefined (reading 'firstName') ~ 🕑 [Time]: Sat Sep 23 2023 9:45:55
+✅ [ERROR]: Cannot read properties of undefined (reading 'firstName') ~ 🕑 [Time]: Sat Sep 23 2023 9:47:20
+✅ [ERROR]: Cannot read properties of undefined (reading 'firstName') ~ 🕑 [Time]: Sat Sep 23 2023 9:48:51
+✅ [ERROR]: 
+Invalid `prisma.faculty.delete()` invocation in
+E:\Programming Hero\Web Dev 2.0\0.1 Backend Project\Practice- University Management\Core_Service\src\app\modules\faculty\faculty.services.ts:342:30
+
+  339 };
+  340 
+  341 const deleteFacultyEvent = async (catched: any) => {
+→ 342   await prisma.faculty.delete({
+          where: {
+            id: undefined,
+        ?   AND?: FacultyWhereInput | FacultyWhereInput[],
+        ?   OR?: FacultyWhereInput[],
+        ?   NOT?: FacultyWhereInput | FacultyWhereInput[],
+        ?   facultyId?: StringFilter | String,
+        ?   firstName?: StringFilter | String,
+        ?   middleName?: StringFilter | String,
+        ?   lastName?: StringFilter | String,
+        ?   profileImage?: StringNullableFilter | String | Null,
+        ?   email?: StringFilter | String,
+        ?   contactNo?: StringFilter | String,
+        ?   gender?: StringFilter | String,
+        ?   bloodgroup?: StringFilter | String,
+        ?   designation?: StringFilter | String,
+        ?   createdAt?: DateTimeFilter | DateTime,
+        ?   updatedAt?: DateTimeFilter | DateTime,
+        ?   academicDepartmentId?: StringFilter | String,
+        ?   academicFacultyId?: StringFilter | String,
+        ?   academicDepartment?: AcademicDepartmentRelationFilter | AcademicDepartmentWhereInput,
+        ?   academicFaculty?: AcademicFacultyRelationFilter | AcademicFacultyWhereInput,
+        ?   courses?: CourseFacultyListRelationFilter,
+        ?   offeredCourseClassSchedules?: OfferedCourseClassScheduleListRelationFilter
+          }
+        })
+
+Argument `where` of type FacultyWhereUniqueInput needs at least one of `id` arguments. Available options are listed in green. ~ 🕑 [Time]: Sat Sep 23 2023 9:53:55

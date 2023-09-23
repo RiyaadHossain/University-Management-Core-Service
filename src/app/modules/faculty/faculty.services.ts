@@ -306,14 +306,15 @@ const updateFacultyEvent = async (catched: any) => {
       facultyId: catched.id,
     },
   });
+
   if (!isExist) {
     createFacultyEvent(catched);
   } else {
     const facultyData: Partial<Faculty> = {
       facultyId: catched.id,
-      firstName: catched.namcatched.firstName,
-      lastName: catched.namcatched.lastName,
-      middleName: catched.namcatched.middleName,
+      firstName: catched.firstName,
+      lastName: catched.lastName,
+      middleName: catched.middleName,
       profileImage: catched.profileImage,
       email: catched.email,
       contactNo: catched.contactNo,
@@ -334,7 +335,11 @@ const updateFacultyEvent = async (catched: any) => {
 };
 
 const deleteFacultyEvent = async (catched: any) => {
-  await prisma.faculty.delete({ where: { id: catched.syncId } });
+  await prisma.faculty.deleteMany({
+    where: {
+      facultyId: catched.id,
+    },
+  });
 };
 
 export const FacultyServices = {
