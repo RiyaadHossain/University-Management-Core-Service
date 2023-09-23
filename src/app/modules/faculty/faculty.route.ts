@@ -43,14 +43,14 @@ route.delete(
 );
 
 route.post(
-  '/:id/assign-faculties',
+  '/:id/assign-courses',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   validateRequest(FacultyValidators.assignOrRemoveCoursesZodSchema),
   FacultyControllers.assignCourses
 );
 
 route.delete(
-  '/:id/remove-faculties',
+  '/:id/remove-courses',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   validateRequest(FacultyValidators.assignOrRemoveCoursesZodSchema),
   FacultyControllers.removeCourses

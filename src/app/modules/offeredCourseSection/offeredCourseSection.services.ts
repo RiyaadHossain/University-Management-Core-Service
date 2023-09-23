@@ -1,14 +1,12 @@
-import { Prisma, OfferedCourseSection } from '@prisma/client';
+import { OfferedCourseSection } from '@prisma/client';
 import {
   IPageOptions,
   paginationHelpers,
 } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
-import { offeredCourseSectionSearchAbleFields } from './offeredCourseSection.constant';
 import {
   IClassSchedule,
-  IFilters,
   IOfferedCourseSectionCreate,
 } from './offeredCourseSection.interface';
 import ApiError from '../../../errors/ApiError';
@@ -112,42 +110,14 @@ const createOfferedCourseSection = async (
 };
 
 const getOfferedCourseSections = async (
-  filters: IFilters,
   options: IPageOptions
 ): Promise<IGenericResponse<OfferedCourseSection[]>> => {
   // Pagination and Sorting
   const { limit, skip, page, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(options);
 
-  const orCondition = [];
-  const { searchTerm, ...filtersData } = filters;
-
-  // Searching
-  if (searchTerm) {
-    orCondition.push({
-      OR: offeredCourseSectionSearchAbleFields.map(field => ({
-        [field]: { contains: searchTerm, mode: 'insensitive' },
-      })),
-    });
-  }
-
-  // Filtering
-  if (Object.keys(filtersData).length) {
-    orCondition.push({
-      AND: Object.keys(filtersData).map(field => ({
-        [field]: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          equals: (filtersData as any)[field],
-        },
-      })),
-    });
-  }
-
-  const whereCondition: Prisma.OfferedCourseSectionWhereInput =
-    orCondition.length ? { AND: orCondition } : {};
-
   const result = await prisma.offeredCourseSection.findMany({
-    where: whereCondition,
+    where: {},
     orderBy: { [sortBy]: sortOrder },
     skip: skip,
     take: limit,

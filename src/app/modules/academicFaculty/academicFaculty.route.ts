@@ -11,6 +11,7 @@ route.get('/:id', AcademicFacultyControllers.getAcademicFaculty);
 
 route.post(
   '/',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   validateRequest(AcademicFacultyValidators.createAcademicFacultyZodSchema),
   AcademicFacultyControllers.createAcademicFaculty
 );
@@ -18,9 +19,7 @@ route.post(
 route.patch(
   '/:id',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  validateRequest(
-    AcademicFacultyValidators.updateAcademicFacultyZodSchema
-  ),
+  validateRequest(AcademicFacultyValidators.updateAcademicFacultyZodSchema),
   AcademicFacultyControllers.updateAcademicFaculty
 );
 

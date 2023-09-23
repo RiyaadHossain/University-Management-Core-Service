@@ -16,7 +16,7 @@ const createOfferedCourse = async (
 
   const { courseIds, academicDepartmentId, semesterRegistrationId } =
     offeredCourseData;
-  console.log(courseIds)
+
   // Create OfferedCourse document with each courseId
   await asyncForEach(courseIds, async (courseId: string) => {
     const isExist = await prisma.offeredCourse.findFirst({

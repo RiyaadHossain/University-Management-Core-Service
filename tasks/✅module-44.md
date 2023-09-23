@@ -1,6 +1,6 @@
 ## Home Task:
 
-### Task 1: Student Enrolled Course Marks
+### Task 1: Student Enrolled Course Marks ✅
 
 - Module: Student Enrolled Course Marks
 - Access: Student
@@ -17,7 +17,7 @@ Instructions:
 - Retrieve and display your course marks for the specified academic semester and course.
 - If there are any errors or issues, handle them gracefully and provide appropriate feedback.
 
-### Task 2: My Course Students
+### Task 2: My Course Students ✅
 
 - Module: Faculty
 - Access: Faculty

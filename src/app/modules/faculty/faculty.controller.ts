@@ -113,9 +113,9 @@ const myCourses: RequestHandler = catchAsync(async (req, res) => {
 });
 
 const myCourseStudents: RequestHandler = catchAsync(async (req, res) => {
-  const id = req.user?.id;
   const query = pick(req.query, ['academicSemesterId', 'courseId', 'offeredCourseSectionId']);
-  const result = await FacultyServices.myCourseStudents(id, query);
+  const options = pick(req.query, ['limit', 'page']);
+  const result = await FacultyServices.myCourseStudents( query, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

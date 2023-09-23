@@ -4,7 +4,7 @@
 - Student Enrolled Course Mark (get all from DB (without filtering)) .
 - Student Semester Payment (filter)
 
-2. Add Zod validations and set role
+2. Add Zod validations and set role 
 
 - Student Enrolled Course
 - Student Enrolled Course Mark

@@ -15,6 +15,29 @@ import {
   IUpdateStudentMarksPayload,
   MyMarksQueryData,
 } from './studentEnrolledCourseMark.interface';
+import {
+  IPageOptions,
+  paginationHelpers,
+} from '../../../helpers/paginationHelper';
+
+const getAllStudentEnrolledCourseMark = async (options: IPageOptions) => {
+  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
+  const data = await prisma.studentEnrolledCourseMark.findMany({
+    skip: skip,
+    take: limit,
+  });
+
+  const total = await prisma.studentEnrolledCourseMark.count();
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+    },
+    data,
+  };
+};
 
 const createStudentEnrolledCourseMark = async (
   transactionClient: Omit<
@@ -250,7 +273,6 @@ const myMarks = async (authUserId: string, payload: MyMarksQueryData) => {
     },
   });
 
-  console.log(studentMarks);
   return studentMarks;
 };
 
@@ -259,4 +281,5 @@ export const studentEnrolledCourseMarkServices = {
   updateStudentMarks,
   updateFinalMarks,
   myMarks,
+  getAllStudentEnrolledCourseMark,
 };

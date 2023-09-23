@@ -11,6 +11,7 @@ route.get('/:id', AcademicSemesterControllers.getAcademicSemester);
 
 route.post(
   '/',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   validateRequest(AcademicSemesterValidators.createAcademicSemesterZodSchema),
   AcademicSemesterControllers.createAcademicSemester
 );

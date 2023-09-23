@@ -5,6 +5,22 @@ import httpStatus from 'http-status';
 import sendResponse from '../../../shared/sendResponse';
 import pick from '../../../shared/pick';
 
+const getAllStudentEnrolledCourseMark = catchAsync(async (req, res) => {
+  const options = pick(req.query, ['page', 'limit']);
+  const result =
+    await studentEnrolledCourseMarkServices.getAllStudentEnrolledCourseMark(
+      options
+    );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Student Marks fetched successfully.',
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 const myMarks: RequestHandler = catchAsync(async (req, res) => {
   const authUserId = req.user?.id;
   const queryData = pick(req.query, ['academicSemesterId', 'courseId']);
@@ -49,6 +65,7 @@ const updateFinalMarks: RequestHandler = catchAsync(async (req, res) => {
 
 export const studentEnrolledCourseMarkControllers = {
   updateStudentMarks,
+  getAllStudentEnrolledCourseMark,
   updateFinalMarks,
   myMarks,
 };
