@@ -244,8 +244,11 @@ const myCourses = async (
   return courseAndSchedules;
 };
 
-const myCourseStudents = async (authUserId: string, payload: IMyCourseStudentsPayload) => {
-  console.log(authUserId, payload)
+const myCourseStudents = async (
+  authUserId: string,
+  payload: IMyCourseStudentsPayload
+) => {
+  console.log(authUserId, payload);
 
   const course = await prisma.course.findUnique({
     where: { id: payload.courseId },
@@ -276,8 +279,63 @@ const myCourseStudents = async (authUserId: string, payload: IMyCourseStudentsPa
       'Academic Semester data not found!'
     );
   }
+};
 
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createFacultyEvent = async (catched: any) => {
+  const facultyData: Partial<Faculty> = {
+    facultyId: catched.id,
+    firstName: catched.name.firstName,
+    lastName: catched.name.lastName,
+    middleName: catched.name.middleName,
+    email: catched.email,
+    contactNo: catched.contactNo,
+    designation: catched.designation,
+    gender: catched.gender,
+    bloodgroup: catched.bloodGroup,
+    academicDepartmentId: catched.academicDepartment.syncId,
+    academicFacultyId: catched.academicFaculty.syncId,
+  };
+
+  await createFaculty(facultyData as Faculty);
+};
+
+const updateFacultyEvent = async (catched: any) => {
+  const isExist = await prisma.faculty.findFirst({
+    where: {
+      facultyId: catched.id,
+    },
+  });
+  if (!isExist) {
+    createFacultyEvent(catched);
+  } else {
+    const facultyData: Partial<Faculty> = {
+      facultyId: catched.id,
+      firstName: catched.namcatched.firstName,
+      lastName: catched.namcatched.lastName,
+      middleName: catched.namcatched.middleName,
+      profileImage: catched.profileImage,
+      email: catched.email,
+      contactNo: catched.contactNo,
+      gender: catched.gender,
+      bloodgroup: catched.bloodGroup,
+      designation: catched.designation,
+      academicDepartmentId: catched.academicDepartment.syncId,
+      academicFacultyId: catched.academicFaculty.syncId,
+    };
+
+    await prisma.faculty.updateMany({
+      where: {
+        facultyId: catched.id,
+      },
+      data: facultyData,
+    });
+  }
+};
+
+const deleteFacultyEvent = async (catched: any) => {
+  await prisma.faculty.delete({ where: { id: catched.syncId } });
+};
 
 export const FacultyServices = {
   createFaculty,
@@ -288,5 +346,8 @@ export const FacultyServices = {
   assignCourses,
   removeCourses,
   myCourses,
-  myCourseStudents
+  myCourseStudents,
+  updateFacultyEvent,
+  deleteFacultyEvent,
+  createFacultyEvent,
 };
