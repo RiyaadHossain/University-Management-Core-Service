@@ -6,96 +6,6 @@
     "auditLog": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\.210468f088c674445612096c97b35df3826f4349-audit.json",
     "files": [
         {
-            "date": 1694251220113,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-09-09-15-error.log",
-            "hash": "e086cab3c6922148eba70f5037ce19e23cf8a9f9eb6b6383c70250c088faa361"
-        },
-        {
-            "date": 1694253623955,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-09-09-16-error.log",
-            "hash": "6a94dcff97c2dbb8eaf6be335bba978e2c3ca1d2b15aba7b6a8f6906711190dc"
-        },
-        {
-            "date": 1694485025853,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-12-09-08-error.log",
-            "hash": "741a954177052df619a7ce45cd56135806d2c706011fcbe55d6273cfa15d9a4b"
-        },
-        {
-            "date": 1694487605771,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-12-09-09-error.log",
-            "hash": "bb346b26d7f57cea8fa65931e1497cba39120b2c678f89e168cd1c2b6e3b3eb7"
-        },
-        {
-            "date": 1694573174169,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-13-09-08-error.log",
-            "hash": "f75eaf58518f11063ca96ab0c09c48d594998957997b95853af1245bdaf13550"
-        },
-        {
-            "date": 1694574325121,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-13-09-09-error.log",
-            "hash": "247b7adedc6a1f75d04798261868a2cec0f8066d4d80e733387c02d382855e24"
-        },
-        {
-            "date": 1694747646854,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-15-09-09-error.log",
-            "hash": "a0f41f72097bb8881c0d0cc6f9341639cc89954ce9bc6b8416d7b7028902f5ab"
-        },
-        {
-            "date": 1694839402622,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-16-09-10-error.log",
-            "hash": "88e6310639d8cba08899c6504ac34f380341ea2d28c5208d5cb21695dd56c00f"
-        },
-        {
-            "date": 1694843992431,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-16-09-11-error.log",
-            "hash": "6a24942c83f8b19f1a586f80b4e85b4145ce1bb949210a8e4ebec4779f46eab6"
-        },
-        {
-            "date": 1694844005265,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-16-09-12-error.log",
-            "hash": "2f3b66d1324c5902126f4b961bf0e643bbf9ec04d69833f61470e3f9d399ba3b"
-        },
-        {
-            "date": 1694857346792,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-16-09-15-error.log",
-            "hash": "c4b128a7ab3656a780f03b3fa3837a94815a58421485708dd2d47afedc573ef2"
-        },
-        {
-            "date": 1694858932993,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-16-09-16-error.log",
-            "hash": "595f39a36f2904d5ad5ab4f0d35c86210b26b8e0b7eacc3a20497b5e907fdf61"
-        },
-        {
-            "date": 1694916739076,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-17-09-08-error.log",
-            "hash": "692bd838679a26770e4a02579b952042b5fb368b2d766ced83794036cb1ed135"
-        },
-        {
-            "date": 1694922814352,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-17-09-09-error.log",
-            "hash": "28315ffcd5b28dad38891f0b5da955f2e0ede5fcf4152e206360585742b54635"
-        },
-        {
-            "date": 1694927238779,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-17-09-11-error.log",
-            "hash": "cbd87716cd93fd9cd26242ca4227fccf408a6d72476a522c394295b45fee3b93"
-        },
-        {
-            "date": 1695176490804,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-20-09-08-error.log",
-            "hash": "a124d86ba616928f9360097e4fcd67baed979712664e91c11a989b16a2135d22"
-        },
-        {
-            "date": 1695178983086,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-20-09-09-error.log",
-            "hash": "ecd3d4d58c0abb3e8b805367657b65abc851ce099c43ac79339c055b871d5d11"
-        },
-        {
-            "date": 1695183308874,
-            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-20-09-10-error.log",
-            "hash": "9ffb63864e2c776b8735834c913958978c5daf43684d4047346173dfc42b6d6b"
-        },
-        {
             "date": 1695261316457,
             "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-21-09-07-error.log",
             "hash": "5a50ba1028f054fc305d46f8b1344828d935f3b1000d2ae63206ad8141401c2f"
@@ -154,6 +64,56 @@
             "date": 1695452414079,
             "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-23-09-13-error.log",
             "hash": "76d079a4db7fc8ea61616be548bba3e6189237570079de6e25a12c4c35d11da6"
+        },
+        {
+            "date": 1695778888550,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-27-09-07-error.log",
+            "hash": "d9aa32a0cd16315a6cabf17f9bceb5a52a5ebdf9a11eeb76e2f3a3ca30c61637"
+        },
+        {
+            "date": 1695867068548,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-28-09-08-error.log",
+            "hash": "8d142e454555a1feae184de858ba5334babf21ded09bfef0fb6cb1aa32ab9e6d"
+        },
+        {
+            "date": 1695957005638,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-29-09-09-error.log",
+            "hash": "ee0425061094f876976c07c50a33686d93596033a0e1bf65851fd96ab952f627"
+        },
+        {
+            "date": 1696043061063,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-30-09-09-error.log",
+            "hash": "af610f4cd40f365c7482f2d38329f403b8c439f746c306c1eca7746a46941b82"
+        },
+        {
+            "date": 1696304184338,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-03-10-09-error.log",
+            "hash": "2da0993c775533202e03c371da362465f524ed4a4546b3948d46314674165ab5"
+        },
+        {
+            "date": 1696395627430,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-04-10-11-error.log",
+            "hash": "2706acb4a9df6994c8b810c4fc86fa065009e170973e0827094bce0e12aba20f"
+        },
+        {
+            "date": 1696400186350,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-04-10-12-error.log",
+            "hash": "b29f5b9f7fab0f63c24fec1474f7221e8a32112fd361c90e879e38154d1342cb"
+        },
+        {
+            "date": 1696412778173,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-04-10-15-error.log",
+            "hash": "2394961c1ef2be9158bb8e4ee8b29536ec03c2bd29490ab82dc0a895cc089cc2"
+        },
+        {
+            "date": 1696418095530,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-04-10-17-error.log",
+            "hash": "fa801e523f86410f318795339f9b033fc339ad1ca520670388185be506f9437e"
+        },
+        {
+            "date": 1696468610610,
+            "name": "E:\\Programming Hero\\Web Dev 2.0\\0.1 Backend Project\\Practice- University Management\\Core_Service\\logs\\winston\\errors\\phu-2023-05-10-07-error.log",
+            "hash": "c1494dc2f5c5b4676b4adb7af9fa41438f00796d1a78c3e74c8f0439a4ae81ae"
         }
     ],
     "hashType": "sha256"
