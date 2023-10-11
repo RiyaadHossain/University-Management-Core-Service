@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/riyad/Documents/Programming Hero/Web Dev 2.0/0.1 Backend Project/Practice- University Management/Core_Service/logs/winston/successes/.d479a23835ed4985a1ac0f2b1b1ef1b9763aa3d2-audit.json",
+    "files": [
+        {
+            "date": 1696672437089,
+            "name": "/home/riyad/Documents/Programming Hero/Web Dev 2.0/0.1 Backend Project/Practice- University Management/Core_Service/logs/winston/successes/phu-2023-07-10-15-success.log",
+            "hash": "66c34188a6782b756e58a41baf9259f103aa8c5952cf13501900674e1aa577ca"
+        },
+        {
+            "date": 1696742734896,
+            "name": "/home/riyad/Documents/Programming Hero/Web Dev 2.0/0.1 Backend Project/Practice- University Management/Core_Service/logs/winston/successes/phu-2023-08-10-11-success.log",
+            "hash": "03c826c392c3edaf350c358261c9f9c8b589752847865c92a0f521db1792bc40"
+        },
+        {
+            "date": 1696830058438,
+            "name": "/home/riyad/Documents/Programming Hero/Web Dev 2.0/0.1 Backend Project/Practice- University Management/Core_Service/logs/winston/successes/phu-2023-09-10-11-success.log",
+            "hash": "eb9620ea8810254afc7c74df188836f36280079fe3e3837204c6d1f14ad67bcb"
+        }
+    ],
+    "hashType": "sha256"
+}
